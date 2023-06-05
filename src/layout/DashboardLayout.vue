@@ -4,16 +4,19 @@
       <mobile-menu slot="content"></mobile-menu>
       <sidebar-link to="/admin/overview">
         <i class="nc-icon nc-chart-pie-35"></i>
-        <p>Dashboard</p>
+        <p>Reporteador</p>
       </sidebar-link>
+
       <sidebar-link to="/admin/user">
         <i class="nc-icon nc-circle-09"></i>
-        <p>User Profile</p>
+        <p>Mi Perfil</p>
       </sidebar-link>
+
       <sidebar-link to="/admin/table-list">
         <i class="nc-icon nc-notes"></i>
-        <p>Table list</p>
+        <p>Administrar Usuarios</p>
       </sidebar-link>
+      <!--
       <sidebar-link to="/admin/typography">
         <i class="nc-icon nc-paper-2"></i>
         <p>Typography</p>
@@ -38,6 +41,7 @@
           <p>Upgrade to PRO</p>
         </sidebar-link>
       </template>
+      -->
     </side-bar>
     <div class="main-panel">
       <top-navbar></top-navbar>
