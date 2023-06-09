@@ -23,6 +23,8 @@ import LightBootstrap from "./light-bootstrap-main";
 // router setup
 import routes from "./routes/routes";
 
+import store from '@/store'
+
 import "./registerServiceWorker";
 // plugin setup
 Vue.use(VueRouter);
@@ -49,4 +51,5 @@ new Vue({
   el: "#app",
   render: (h) => h(App),
   router,
+  store 
 });

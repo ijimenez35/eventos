@@ -2,7 +2,7 @@
   <div class="wrapper">
     <side-bar>
       <mobile-menu slot="content"></mobile-menu>
-      <sidebar-link to="/admin/overview">
+      <sidebar-link to="/admin/reporteador">
         <i class="nc-icon nc-chart-pie-35"></i>
         <p>Reporteador</p>
       </sidebar-link>
@@ -12,7 +12,7 @@
         <p>Mi Perfil</p>
       </sidebar-link>
 
-      <sidebar-link to="/admin/table-list">
+      <sidebar-link to="/admin/usuarios">
         <i class="nc-icon nc-notes"></i>
         <p>Administrar Usuarios</p>
       </sidebar-link>

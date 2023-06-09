@@ -13,30 +13,30 @@
                     <div class="text-center">
                       <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
                         style="width: 185px;" alt="logo">
-                      <h4 class="mt-1 mb-5 pb-1">Somos Solución Afore Equipo</h4>
+                      <h4 class="mt-1 mb-5 pb-1">We are The Solucion Afore Team</h4>
                     </div>
 
                     <form>
-                      <p>Ingresa la información de tu cuenta</p>
+                      <p>Proporcione la siguiente información para actualizar su Contraseña</p>
 
                       <div class="form-outline mb-4">
-                        <input type="email" id="form2Example11" class="form-control" placeholder="Correo Electrónico" />
-                        <label class="form-label" for="form2Example11">Correo Electrónico</label>
+                        <input type="password" id="form2Example11" class="form-control" placeholder="Contraseña" />
+                        <label class="form-label" for="form2Example11">Contraseña (mínimo 6 caracteres, mayusculas, minusculas y números)</label>
                       </div>
 
                       <div class="form-outline mb-4">
-                        <input type="password" id="form2Example22" class="form-control" placeholder="Contraseña"/>
-                        <label class="form-label" for="form2Example22">Contraseña</label>
+                        <input type="password" id="form2Example22" class="form-control" placeholder="Confirma Contraseña" />
+                        <label class="form-label" for="form2Example22">Confirma tu Contraseña</label>
                       </div>
 
                       <div class="text-center pt-1 mb-5 pb-1">
-                        <button @click="login" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button">Ingresar</button>
-                        <a class="text-muted" href="#!">Olvidaste tu Contraseña?</a>
+                        <button @click="actualizar" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button">Actualizar</button>
+                        <a v-show="false" class="text-muted" href="#!">Forgot password?</a>
                       </div>
 
                       <div class="d-flex align-items-center justify-content-between pb-4">
-                        <p class="mb-0 me-2">Tienes cuenta de acceso?</p>
-                        <button type="button" class="btn btn-outline-danger">Crear</button>
+                        <p class="mb-0 me-2">Don't have an account?</p>
+                        <button type="button" class="btn btn-outline-danger">Create new</button>
                       </div>
 
                     </form>
@@ -81,6 +81,9 @@
       }
     },
     methods: {
+      actualizar(){
+        
+      },
       login(){
         this.$router.push("/admin/")
       }
