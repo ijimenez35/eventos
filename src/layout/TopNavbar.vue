@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Solución Afore</a>
+      <a class="navbar-brand" href="#"><img src="/img/logo-atrabajar.png" style="height: 35px;" alt="logo"> </a> 
       <button type="button"
               class="navbar-toggler navbar-toggler-right"
               :class="{toggled: $sidebar.showSidebar}"

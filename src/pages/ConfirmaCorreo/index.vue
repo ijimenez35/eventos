@@ -7,11 +7,11 @@
           <div class="col-xl-10">
             <div class="card rounded-3 text-black">
               <div class="row g-0">
-                <div class="col-lg-6">
+                <div class="col-lg-6" style="background-color:#FFFFFF">
                   <div class="card-body p-md-5 mx-md-4">
 
                     <div class="text-center">
-                      <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+                      <img src="/img/logo-atrabajar.png"
                         style="width: 185px;" alt="logo">
                       <h4 class="mt-1 mb-5 pb-1">We are The Solucion Afore Team</h4>
                     </div>
@@ -31,15 +31,15 @@
                       </div>
 
                       <div class="d-flex align-items-center justify-content-between pb-4">
-                        <p class="mb-0 me-2">Don't have an account?</p>
-                        <button type="button" class="btn btn-outline-danger">Create new</button>
+                        <p class="mb-0 me-2">Tienes cuenta de acceso?</p>
+                        <button type="button" class="btn btn-outline-danger">Crear</button>
                       </div>
 
                     </form>
 
                   </div>
                 </div>
-                <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                <div class="col-lg-6 d-flex align-items-center gradient-custom-2" style="background-color:#0090CC">
                   <div class="text-white px-3 py-4 p-md-5 mx-md-4">
                     <h4 class="mb-4">We are more than just a company</h4>
                     <p class="small mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod

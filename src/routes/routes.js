@@ -23,6 +23,8 @@ import Usuarios from 'src/pages/Usuarios.vue'
 // User pages
 import ConfirmaCorreo from 'src/pages/ConfirmaCorreo/index.vue'
 import ContraseniaTemporal from 'src/pages/ContraseniaTemporal/index.vue'
+import Registro from 'src/pages/Registro/index.vue'
+import RecoverPw from 'src/pages/RecoverPw/index.vue'
 
 // Default pages
 
@@ -121,6 +123,16 @@ const routes = [
     path: '/login',
     alias: "Login",
     component: Login
+  },
+  {
+    path: '/registro',
+    alias: "Registro",
+    component: Registro
+  },
+  {
+    path: '/recoverPw',
+    alias: "RecoverPw",
+    component: RecoverPw
   },
   {
     path: '/confirmaCorreo',

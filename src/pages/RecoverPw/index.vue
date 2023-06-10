@@ -17,7 +17,7 @@
                     </div>
 
                     <form>
-                      <p>Ingresa la información de tu cuenta</p>
+                      <p>Olvide mi Contraseña</p>
 
                       <div class="form-outline mb-4">
                         <input type="email" id="form2Example11" class="form-control" placeholder="Correo Electrónico" />
@@ -25,13 +25,12 @@
                       </div>
 
                       <div class="form-outline mb-4">
-                        <input type="password" id="form2Example22" class="form-control" placeholder="Contraseña"/>
-                        <label class="form-label" for="form2Example22">Contraseña</label>
+                        <input type="email" id="form2Example11" class="form-control" placeholder="Confirma tu Correo Electrónico" />
+                        <label class="form-label" for="form2Example11">Confirma tu Correo Electrónico</label>
                       </div>
 
                       <div class="text-center pt-1 mb-5 pb-1">
-                        <button @click="login" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button">Ingresar</button>
-                        <a class="text-muted" href="#" @click="olvidaste()">Olvidaste tu Contraseña?</a>
+                        <button @click="siguiente" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button">Siguiente</button>
                       </div>
 
                       <div class="d-flex align-items-center justify-content-between pb-4">
@@ -89,7 +88,10 @@
       },
       crear(){
         this.$router.push("/registro/")
-      }
+      },
+      siguiente(){
+        this.$router.push("/login/")
+      },
     },
   }
 

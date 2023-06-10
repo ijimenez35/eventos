@@ -1,16 +1,55 @@
 <template>
   <div class="content">
     <div class="container-fluid">
-      
       <div class="row">
         <div class="col-md-12">
           <chart-card :chart-data="lineChart.data"
                       :chart-options="lineChart.options"
                       :responsive-options="lineChart.responsiveOptions">
             <template slot="header">
-              <h4 class="card-title">Users Behavior</h4>
-              <p class="card-category">24 Hours performance</p>
+              <h4 class="card-title">Reposteador</h4>
+              <p class="card-category">Selecciona Mes y Año</p>
             </template>
+
+            <template slot="header">
+              <div class="row m-t-30" style="margin-top:30px;">
+                <div class="col-md-6">
+                  <div class="form-outline mb-4">
+                    <select id="form2Example11" class="form-control">
+                      <option value="0">Seleciona un Año</option>
+                      <option value="2023">2023</option>
+                      <option value="2022">2022</option>
+                      <option value="2021">2021</option>
+                      <option value="2020">2020</option>
+                    </select>
+                    <label class="form-label" for="form2Example11">Año</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-outline mb-4">
+                    <select id="form2Example11" class="form-control">
+                      <option value="0">Seleciona un Mes</option>
+                      <option value="1">Enero</option>
+                      <option value="2">Febrero</option>
+                      <option value="3">Marzo</option>
+                      <option value="4">Abril</option>
+                      <option value="5">Mayo</option>
+                      <option value="6">Junio</option>
+                      <option value="7">Julio</option>
+                      <option value="8">Agosto</option>
+                      <option value="9">Septiembre</option>
+                      <option value="10">Octubre</option>
+                      <option value="11">Noviembre</option>
+                      <option value="12">Diciembre</option>
+                    </select>
+                    <label class="form-label" for="form2Example11">Mes</label>
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            
+
             <template slot="footer">
               <div class="legend">
                 <i class="fa fa-circle text-info"></i> Open
