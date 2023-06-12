@@ -62,6 +62,7 @@
   </div>
 </template>
 <script>
+  import Vue from 'vue'
   export default {
     props: {
       backgroundColor: {
@@ -82,12 +83,18 @@
     },
     methods: {
       login(){
+        Vue.showLoader();
+        Vue.hideLoader();
         this.$router.push("/admin/")
       },
       olvidaste(){
+        Vue.showLoader();
+        Vue.hideLoader();
         this.$router.push("/recoverPw/")
       },
       crear(){
+        Vue.showLoader();
+        Vue.hideLoader();
         this.$router.push("/registro/")
       }
     },

@@ -25,6 +25,59 @@ import routes from "./routes/routes";
 
 import store from '@/store'
 
+const VueAjax = {
+  install(Vue, options) {
+    Vue.mixin({
+      data: function() {
+
+      },
+      mounted() {
+
+      },
+      methods: {
+
+      }
+    })
+
+    Vue.IN = function() {
+      var rspt = false;
+      var v1;
+      var argv = arguments;
+      var argc = argv.length;
+      if (argc < 2) {
+          return true;
+      } else {
+          for (var i = 0; i < argc; i++) {
+              if (i == 0) {
+                  v1 = argv[i];
+              } else {
+                  if (v1 == argv[i]) { rspt = true; }
+              }
+          }
+      }
+      return rspt;
+    }
+    Vue.alert = function(params) {
+      alert( params.html )
+    }
+
+    Vue.showLoader = () => {
+      console.log('entra')
+      $(".box-loader").fadeIn();
+      $("#svgContainer").fadeIn();
+    };
+    // Funcion global que esconde el loader
+    Vue.hideLoader = () => {
+        $(".box-loader").fadeOut();
+        $("#svgContainer").fadeOut();
+    };
+
+  }
+}
+
+Vue.use(VueAjax);
+
+
 import "./registerServiceWorker";
 // plugin setup
 Vue.use(VueRouter);
