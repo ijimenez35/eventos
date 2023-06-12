@@ -7,7 +7,7 @@
                       :chart-options="lineChart.options"
                       :responsive-options="lineChart.responsiveOptions">
             <template slot="header">
-              <h4 class="card-title">Reposteador</h4>
+              <h4 class="card-title">Reporteador</h4>
               <p class="card-category">Selecciona Mes y Año</p>
             </template>
 
