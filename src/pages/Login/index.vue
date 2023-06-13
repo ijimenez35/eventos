@@ -83,9 +83,27 @@
     },
     methods: {
       login(){
-        Vue.showLoader();
-        Vue.hideLoader();
-        this.$router.push("/admin/")
+        /*
+        Vue.alert({ 'title': 'Aviso', 'html': 'Ocurrio un error, por favor avise al administrador del sistema',
+            'buttons': [
+                { title: 'Aceptar', handler: () => { } }
+            ]
+        })
+
+        setTimeout(() => { 
+          //self.$router.push("/login/") 
+          Vue.alert({ 'title': 'Notificacion', 'html': 'Hola',
+              'buttons': [
+                  { title: 'Aceptar', handler: () => { } }
+              ]
+          })
+        }, 1000);
+*/
+        
+        //return
+        Vue.showLoader('Hola Mundo');
+        //Vue.hideLoader();
+        //this.$router.push("/admin/")
       },
       olvidaste(){
         Vue.showLoader();

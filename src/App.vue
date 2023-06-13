@@ -6,7 +6,7 @@
     <div class="box-loader">
       <div class="bgloader text-center" id="svgContainer" @dblclick="cerrarAnimacion()">
         <img src="/img/loading-bubbles.svg" alt="Loading icon" />
-        <h4 class="text-white " style="margin-top:5px;">Procesando Información</h4>
+        <h4 class="text-white " style="margin-top:5px;" id="loaderText">Procesando Información</h4>
       </div>
     </div>
 
