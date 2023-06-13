@@ -16,6 +16,27 @@
         <i class="nc-icon nc-notes"></i>
         <p>Administrar Usuarios</p>
       </sidebar-link>
+
+      <sidebar-link to="/admin/usuarios">
+        <i class="nc-icon nc-notes"></i>
+        <p>Bases de Datos</p>
+      </sidebar-link>
+
+      <sidebar-link to="/admin/usuarios">
+        <i class="nc-icon nc-notes"></i>
+        <p>HTML's</p>
+      </sidebar-link>
+
+      <sidebar-link to="/admin/usuarios">
+        <i class="nc-icon nc-notes"></i>
+        <p>Correos</p>
+      </sidebar-link>
+
+      <sidebar-link to="/admin/usuarios">
+        <i class="nc-icon nc-notes"></i>
+        <p>Imagenes</p>
+      </sidebar-link>
+
       <!--
       <sidebar-link to="/admin/typography">
         <i class="nc-icon nc-paper-2"></i>
