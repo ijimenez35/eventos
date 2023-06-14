@@ -350,7 +350,7 @@
         var self = this 
 
 
-        axios.get(process.env.VUE_APP_SID_API_HOST_JS + '/ws/getDB.php',  'month='+ self.month + '&year=' + self.year )
+        axios.get(process.env.VUE_APP_SID_API_HOST_JS + '/ws/dbcsv.php',  'month='+ self.month + '&year=' + self.year )
         .then(async resp => {
           console.log( resp) ;
             
