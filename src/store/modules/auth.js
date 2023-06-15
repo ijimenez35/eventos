@@ -42,7 +42,7 @@ const actions = {
   [AUTH_REQUEST]: ({commit}, user) => {
     return new Promise((resolve, reject) => {
         delete axios.defaults.headers.common['Authorization']
-        axios.post(process.env.VUE_APP_SID_API_HOST_JS + '/ws/login.php', 
+        axios.post(process.env.VUE_APP_API_HOST_JS + '/ws/login.php', 
           'login='+user.username+'&cntr='+user.password
         )
         .then(async resp => {
@@ -82,7 +82,7 @@ const actions = {
               }
             })
 /*
-            axios.get(process.env.VUE_APP_SID_API_HOST_JS + '/ws/wsMySQLJson.php', { params: data })
+            axios.get(process.env.VUE_APP_API_HOST_JS + '/ws/wsMySQLJson.php', { params: data })
             .then(respRoles => {
               
               if( respRoles.data.DatosJSON.length == 0 ){

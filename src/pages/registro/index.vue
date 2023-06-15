@@ -205,7 +205,7 @@
         var self = this
         self.submitedMail = true
 
-        //console.log( process.env.VUE_APP_SID_API_HOST_JS )
+        //console.log( process.env.VUE_APP_API_HOST_JS )
         //return
         //Validamos formulario
         if(self.$v.correo.$invalid) return
@@ -213,7 +213,7 @@
         self.submitedRequestMail = false;
         e.preventDefault();
 
-        axios.post(process.env.VUE_APP_SID_API_HOST_JS + '/ws/vrfcMail.php',  'mail='+ self.correo.correo )
+        axios.post(process.env.VUE_APP_API_HOST_JS + '/ws/vrfcMail.php',  'mail='+ self.correo.correo )
         .then(async resp => {
             self.submitedRequestMail = true;
             if( resp.data.DatosJSON.length == 0 ){
@@ -253,7 +253,7 @@
         if(self.$v.registro.$invalid) return
         e.preventDefault();
         
-        axios.post(process.env.VUE_APP_SID_API_HOST_JS + '/ws/altaUsuario.php',  'correo='+ self.correo.correo + '' + '&nombre='+ self.registro.nombre  + '&aPaterno='+ self.registro.aPaterno + '' + '&aMaterno='+ self.registro.aMaterno + '' + '&telefono='+ self.registro.telefono + '' + '&clave='+ self.registro.clave + ''  )
+        axios.post(process.env.VUE_APP_API_HOST_JS + '/ws/altaUsuario.php',  'correo='+ self.correo.correo + '' + '&nombre='+ self.registro.nombre  + '&aPaterno='+ self.registro.aPaterno + '' + '&aMaterno='+ self.registro.aMaterno + '' + '&telefono='+ self.registro.telefono + '' + '&clave='+ self.registro.clave + ''  )
         .then(async resp => {
             if( resp.data.DatosJSON[0].estatus == 'insertado' ){
                 let correo = self.correo.correo;

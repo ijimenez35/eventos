@@ -191,6 +191,49 @@ const VueAjax = {
         $("#svgContainer").fadeOut();
     };
 
+    Vue.emrgPstnNeva = function(params) {
+
+      if (params.method == 'post') {
+          var form = document.createElement("form");
+          form.setAttribute("method", params.method);
+          form.setAttribute("action", params.url);
+          form.setAttribute("target", '_blank');
+
+          if (params.params) {
+              for (var i in params.params) {
+                  if (params.params.hasOwnProperty(i)) {
+                      var input = document.createElement('input');
+                      input.type = 'hidden';
+                      input.name = i;
+                      input.value = params.params[i];
+                      form.appendChild(input);
+                  }
+              }
+          }
+
+          document.body.appendChild(form);
+
+          form.submit();
+          document.body.removeChild(form);
+      } else {
+          var ruta = params.url
+          var parametrosGET = ''
+
+          if (params.params) {
+              for (var i in params.params) {
+                  if (parametrosGET == '') {
+                      parametrosGET += '?'
+                  } else {
+                      parametrosGET += '&'
+                  }
+                  if (params.params.hasOwnProperty(i)) {
+                      parametrosGET += i + '=' + params.params[i]
+                  }
+              }
+          }
+          window.open(ruta + parametrosGET);
+      }
+    }
   }
 }
 

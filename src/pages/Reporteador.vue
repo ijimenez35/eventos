@@ -13,17 +13,17 @@
               <div class="row m-t-30" style="margin-top:30px;">
                 <div class="col-md-6">
                   <div class="form-outline mb-4">
-                    <select class="form-control" v-model="month">
+                    <select class="form-control" v-model="month" @change="getData()">
                       <option value="0">Seleciona un Mes</option>
-                      <option value="1">Enero</option>
-                      <option value="2">Febrero</option>
-                      <option value="3">Marzo</option>
-                      <option value="4">Abril</option>
-                      <option value="5">Mayo</option>
-                      <option value="6">Junio</option>
-                      <option value="7">Julio</option>
-                      <option value="8">Agosto</option>
-                      <option value="9">Septiembre</option>
+                      <option value="01">Enero</option>
+                      <option value="02">Febrero</option>
+                      <option value="03">Marzo</option>
+                      <option value="04">Abril</option>
+                      <option value="05">Mayo</option>
+                      <option value="06">Junio</option>
+                      <option value="07">Julio</option>
+                      <option value="08">Agosto</option>
+                      <option value="09">Septiembre</option>
                       <option value="10">Octubre</option>
                       <option value="11">Noviembre</option>
                       <option value="12">Diciembre</option>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-outline mb-4">
-                    <select class="form-control" v-model="entidad">
+                    <select class="form-control" v-model="entidad" @change="filtroEntidad()">
                       <option value="0">Todas</option>
                       <option value="1">Aguascalientes</option>
                       <option value="2">Baja California</option>
@@ -87,14 +87,23 @@
                 <div class="col-md-12">
                   <table class="table table-hover table-striped">
                     <thead>
-                      <tr><th>Id</th><th>Name</th><th>Salary</th><th>Country</th><th>City</th></tr>
+                      <tr><th><input type="checkbox" v-model="checkedAll" @change="changeCheckAll"/></th><th>Id</th><th>NUMERO DE CONTROL</th><th>CURP</th><th>NOMBRE ENTIDAD</th><th>OPCIONES</th></tr>
                     </thead>
                     <tbody>
-                      <tr><td>1</td><td>Dakota Rice</td><td>$36.738</td><td>Niger</td><td>Oud-Turnhout</td></tr>
-                      <tr><td>2</td><td>Minerva Hooper</td><td>$23,789</td><td>Curaçao</td><td>Sinaai-Waas</td></tr>
-                      <tr><td>3</td><td>Sage Rodriguez</td><td>$56,142</td><td>Netherlands</td><td>Baileux</td></tr>
-                      <tr><td>4</td><td>Philip Chaney</td><td>$38,735</td><td>Korea, South</td><td>Overland Park</td></tr>
-                      <tr><td>5</td><td>Doris Greene</td><td>$63,542</td><td>Malawi</td><td>Feldkirchen in Kärnten</td></tr>
+
+                      <tr v-for="(registro, index) in registros" :key="index" >
+                        <td>
+                          <input v-model="registros[index].seleccionado" v-bind:true-value="'1'" v-bind:false-value="'0'" type="checkbox"/>
+                        </td>
+                        <td>{{ registro.ID }}</td>
+                        <td>{{ registro['NUMERO DE CONTROL'] }}</td>
+                        <td>{{ registro['CURP'] }}</td>
+                        <td>{{ registro['NOMBRE ENTIDAD'] }}</td>
+                        <td>
+                          <button type="button" class="btn btn-primary" @click="generarDocumento( registro )">Generar Documento</button>
+                        </td>
+                      </tr>
+                      
                     </tbody>
                   </table>
                 </div>
@@ -102,7 +111,7 @@
               <!--Opciones-->
               <div class="row" >
                 <div class="col-md-12">
-                  <button type="button" class="btn btn-primary btn-lg btn-block" @click="generar()">Generar Documento</button>
+                  <button type="button" class="btn btn-primary btn-lg btn-block" @click="generarDocumentos()">Generar Documento</button>
 
                   <button class="btn btn-primary btn-lg btn-block" disabled_ v-show="false">
                     <span class="spinner-grow spinner-grow-sm"></span>
@@ -248,6 +257,7 @@
   import StatsCard from 'src/components/Cards/StatsCard.vue'
   import LTable from 'src/components/Table.vue'
   import Vue from 'vue'
+  import axios from 'axios'
 
   export default {
     components: {
@@ -258,8 +268,9 @@
     data () {
       return {
         year: '2023',
-        month: '5',
+        month: '0',
         entidad: '0',
+        checkedAll: false,
         editTooltip: 'Edit Task',
         deleteTooltip: 'Remove',
         pieChart: {
@@ -341,24 +352,144 @@
             {title: 'Read "Following makes Medium better"', checked: false},
             {title: 'Unfollow 5 enemies from twitter', checked: false}
           ]
-        }
+        },
+        registros: [],
+        registrosData: []
       }
     },
     methods: {
-      generar(){
-        Vue.showLoader();
+      getData(){
         var self = this 
+        Vue.showLoader();
 
+        if( self.month == '0' || self.year == '0' ){
+          return
+        }
 
-        axios.get(process.env.VUE_APP_SID_API_HOST_JS + '/ws/dbcsv.php',  'month='+ self.month + '&year=' + self.year )
+        self.checkedAll = false
+        
+        axios.get(process.env.VUE_APP_API_HOST_JS + '/dbcsv.php',  'month='+ self.month + '&year=' + self.year )
         .then(async resp => {
-          console.log( resp) ;
-            
+          Vue.hideLoader();
+          //console.log( resp) ;
+          //filtrar por entidad
+          if( resp.status == 200 ){
+            if( resp.data.DatosJSON ){
+              if( resp.data.DatosJSON.length > 0 ){
+                self.registrosData = resp.data.DatosJSON
+                self.filtroEntidad()
+              }
+            }
+          }
         })
         .catch(err => {
             console.log( 'error' + err )
         })
+      },
+      changeCheckAll(ev){
+        this.registros.forEach(rgst=>{rgst.seleccionado = ev.target.checked ? '1': '0'})
+      },
+      filtroEntidad(){
+        var self = this
+        var registros = [];
+        if( self.entidad == '0' ){
+          for( var i = 0; i<self.registrosData.length; i++ ){
+            Vue.set( self.registrosData[i], 'seleccionado' , '0' )
+          }
+          self.registros = self.registrosData
+        }else{
+          for( var i = 0 ; i<self.registrosData.length ; i++ ){
+            if( self.entidad == self.registrosData[i]['ENTIDAD_y']){
+              registros.push( self.registrosData[i] )
+            }
+          }
+          for( var i = 0; i<self.registros.length; i++ ){
+            Vue.set( self.registros[i], 'seleccionado' , '0' )
+          }
+          self.registros = registros
+        }
+        console.log( self.registros )
+      },
+      generarDocumento( registro ){
+        var  self = this
+        console.log( registro )
+        var datos = '{';
+        datos += '"nmroCntr":"'+ registro['NUMERO DE CONTROL'] +'", '
+        datos += '"curp":"'+ registro['CURP'] +'", '
+        datos += '"mncp":"'+ registro['NOMBRE MUNICIPIO'] +'", '
+        datos += '"sexo":"'+ registro['Sexo'] +'", '
+        datos += '"cp":"'+ registro['CODIGO POSTAL'] +'", '
+        datos += '"edad":"'+ registro['Edad'] +'", '
+        datos += '"ageb":"'+ registro['ageb'] +'", '
+        datos += '"estd":"'+ registro['NOMBRE ENTIDAD'] +'", '
 
+
+        datos += '"pt":"'+ registro['POBTOT'] +'", '
+        datos += '"ptf":"'+ registro['POBFEM'] +'", '
+        datos += '"ptm":"'+ registro['POBMAS'] +'", '
+
+        datos += '"p18plus":"'+ registro['P_18YMAS'] +'", '
+        datos += '"p18plusf":"'+ registro['P_18YMAS_F'] +'", '
+        datos += '"p18plusm":"'+ registro['P_18YMAS_M'] +'", '
+
+        datos += '"p60":"'+ registro['P_60YMAS'] +'", '
+        datos += '"p60f":"'+ registro['P_60YMAS_F'] +'", '
+        datos += '"p60m":"'+ registro['P_60YMAS_M'] +'", '
+
+        datos += '"gpe":"'+ registro['GRAPROES'] +'", '
+        datos += '"pea":"'+ registro['PEA'] +'", '
+        datos += '"peaf":"'+ registro['PEA_F'] +'", '
+        datos += '"peam":"'+ registro['PEA_M'] +'", '
+
+        datos += '"po":"'+ registro['POCUPADA'] +'", '
+        datos += '"pof":"'+ registro['POCUPADA_F'] +'", '
+        datos += '"pom":"'+ registro['POCUPADA_M'] +'", '
+
+        datos += '"pass":"'+ registro['PDER_SS'] +'", '
+        datos += '"paIMSS":"'+ registro['PDER_IMSS'] +'", '
+        datos += '"paISSSTE":"'+ registro['PDER_ISTE'] +'", '
+        datos += '"paISSSTEe":"'+ registro['PDER_ISTEE'] +'", '
+
+        datos += '"ncs":"'+ registro['NIVEL PREDOMINANTE'] +'", '
+        datos += '"ipm":"'+ registro['RCV'] +'", '
+
+        datos += '"0-5":"'+ registro['0 a 5 personas'] +'", '
+        datos += '"6-10":"'+ registro['6 a 10 personas'] +'", '
+        datos += '"11-30":"'+ registro['11 a 30 personas'] +'", '
+        datos += '"31-50":"'+ registro['31 a 50 personas'] +'", '
+        datos += '"51-100":"'+ registro['51 a 100 personas'] +'", '
+        datos += '"101-250":"'+ registro['101 a 250 personas'] +'"'
+        datos += '}'
+        
+        var datosSend = '{ "DatosJSON": ['+datos+'] }';
+        self.vistaDocumento( datosSend )
+      },
+      generarDocumentos(){
+        var self = this
+        //Generar documentos seleccionados
+        var datos = '';
+
+        for( var i = 0 ; i<self.registros.length ; i++ ){
+          if( self.registros[i].seleccionado == '1' ){
+            if( datos != ''){
+              datos += ',';
+            }
+            datos += '{"nmroCntr":"'+ self.registros[i]['NUMERO DE CONTROL'] +'", "curp":"'+ self.registros[i]['CURP'] +'"}'
+          }
+        }
+
+        if( datos == ''){
+          Vue.alert({"title":'Aviso','html':'Seleccione por lo menos un registro', 'buttons': [ { title: 'Aceptar', handler: () => { } } ]})
+          return 
+        }
+
+        var datosSend = '{ "DatosJSON": ['+datos+'] }';
+        self.vistaDocumento( datosSend )
+
+      },
+      vistaDocumento( datos ){
+        var params = { "Datos": datos };
+        Vue.emrgPstnNeva( { "method":'post', "params": params, "url": process.env.VUE_APP_API_HOST_JS + '/reporte.php' } );
       }
     }
 
