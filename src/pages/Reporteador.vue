@@ -418,10 +418,10 @@
         datos += '"curp":"'+ registro['CURP'] +'", '
         datos += '"mncp":"'+ registro['NOMBRE MUNICIPIO'] +'", '
         datos += '"sexo":"'+ registro['Sexo'] +'", '
-        datos += '"cp":"'+ registro['CODIGO POSTAL'] +'", '
+        datos += '"cp":"'+ registro['p_code_ok'] +'", '
         datos += '"edad":"'+ registro['Edad'] +'", '
         datos += '"ageb":"'+ registro['ageb'] +'", '
-        datos += '"estd":"'+ registro['NOMBRE ENTIDAD'] +'", '
+        datos += '"estd":"'+ registro['NOM_ENT'] +'", '
 
 
         datos += '"pt":"'+ registro['POBTOT'] +'", '
@@ -451,7 +451,7 @@
         datos += '"paISSSTEe":"'+ registro['PDER_ISTEE'] +'", '
 
         datos += '"ncs":"'+ registro['NIVEL PREDOMINANTE'] +'", '
-        datos += '"ipm":"'+ registro['RCV'] +'", '
+        datos += '"ipm":"---", '
 
         datos += '"0-5":"'+ registro['0 a 5 personas'] +'", '
         datos += '"6-10":"'+ registro['6 a 10 personas'] +'", '
