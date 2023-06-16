@@ -89,7 +89,7 @@
                     <thead>
                       <tr><th><input type="checkbox" v-model="checkedAll" @change="changeCheckAll"/></th><th>Id</th><th>NUMERO DE CONTROL</th><th>CURP</th><th>NOMBRE ENTIDAD</th><th>OPCIONES</th></tr>
                     </thead>
-                    <tbody>
+                    <tbody >
 
                       <tr v-for="(registro, index) in registros" :key="index" >
                         <td>
@@ -100,18 +100,32 @@
                         <td>{{ registro['CURP'] }}</td>
                         <td>{{ registro['NOMBRE ENTIDAD'] }}</td>
                         <td>
-                          <button type="button" class="btn btn-primary" @click="generarDocumento( registro )">Generar Documento</button>
+                          <button type="button" class="btn btn-danger" @click="generarDocumento( registro )">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-pdf" viewBox="0 0 16 16">
+                              <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                              <path d="M4.603 12.087a.81.81 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.68 7.68 0 0 1 1.482-.645 19.701 19.701 0 0 0 1.062-2.227 7.269 7.269 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.187-.012.395-.047.614-.084.51-.27 1.134-.52 1.794a10.954 10.954 0 0 0 .98 1.686 5.753 5.753 0 0 1 1.334.05c.364.065.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.856.856 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.716 5.716 0 0 1-.911-.95 11.642 11.642 0 0 0-1.997.406 11.311 11.311 0 0 1-1.021 1.51c-.29.35-.608.655-.926.787a.793.793 0 0 1-.58.029zm1.379-1.901c-.166.076-.32.156-.459.238-.328.194-.541.383-.647.547-.094.145-.096.25-.04.361.01.022.02.036.026.044a.27.27 0 0 0 .035-.012c.137-.056.355-.235.635-.572a8.18 8.18 0 0 0 .45-.606zm1.64-1.33a12.647 12.647 0 0 1 1.01-.193 11.666 11.666 0 0 1-.51-.858 20.741 20.741 0 0 1-.5 1.05zm2.446.45c.15.162.296.3.435.41.24.19.407.253.498.256a.107.107 0 0 0 .07-.015.307.307 0 0 0 .094-.125.436.436 0 0 0 .059-.2.095.095 0 0 0-.026-.063c-.052-.062-.2-.152-.518-.209a3.881 3.881 0 0 0-.612-.053zM8.078 5.8a6.7 6.7 0 0 0 .2-.828c.031-.188.043-.343.038-.465a.613.613 0 0 0-.032-.198.517.517 0 0 0-.145.04c-.087.035-.158.106-.196.283-.04.192-.03.469.046.822.024.111.054.227.09.346z"/>
+                            </svg>
+                            Documento</button>
                         </td>
                       </tr>
-                      
-                    </tbody>
+                    </tbody> 
                   </table>
+
+                  <span v-show="procesando == false && registros.length == 0">Sin Información </span> 
+                  <span v-show="procesando == true">Procesando Información</span> 
+
                 </div>
               </div>
               <!--Opciones-->
               <div class="row" >
                 <div class="col-md-12">
-                  <button type="button" class="btn btn-primary btn-lg btn-block" @click="generarDocumentos()">Generar Documento</button>
+                  <button v-show="registros.length>0" type="button" class="btn btn-danger btn-lg btn-block" @click="generarDocumentos()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-pdf" viewBox="0 0 16 16">
+                      <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                      <path d="M4.603 12.087a.81.81 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.68 7.68 0 0 1 1.482-.645 19.701 19.701 0 0 0 1.062-2.227 7.269 7.269 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.187-.012.395-.047.614-.084.51-.27 1.134-.52 1.794a10.954 10.954 0 0 0 .98 1.686 5.753 5.753 0 0 1 1.334.05c.364.065.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.856.856 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.716 5.716 0 0 1-.911-.95 11.642 11.642 0 0 0-1.997.406 11.311 11.311 0 0 1-1.021 1.51c-.29.35-.608.655-.926.787a.793.793 0 0 1-.58.029zm1.379-1.901c-.166.076-.32.156-.459.238-.328.194-.541.383-.647.547-.094.145-.096.25-.04.361.01.022.02.036.026.044a.27.27 0 0 0 .035-.012c.137-.056.355-.235.635-.572a8.18 8.18 0 0 0 .45-.606zm1.64-1.33a12.647 12.647 0 0 1 1.01-.193 11.666 11.666 0 0 1-.51-.858 20.741 20.741 0 0 1-.5 1.05zm2.446.45c.15.162.296.3.435.41.24.19.407.253.498.256a.107.107 0 0 0 .07-.015.307.307 0 0 0 .094-.125.436.436 0 0 0 .059-.2.095.095 0 0 0-.026-.063c-.052-.062-.2-.152-.518-.209a3.881 3.881 0 0 0-.612-.053zM8.078 5.8a6.7 6.7 0 0 0 .2-.828c.031-.188.043-.343.038-.465a.613.613 0 0 0-.032-.198.517.517 0 0 0-.145.04c-.087.035-.158.106-.196.283-.04.192-.03.469.046.822.024.111.054.227.09.346z"/>
+                    </svg>
+                    Generar Documento
+                  </button>
 
                   <button class="btn btn-primary btn-lg btn-block" disabled_ v-show="false">
                     <span class="spinner-grow spinner-grow-sm"></span>
@@ -354,12 +368,16 @@
           ]
         },
         registros: [],
-        registrosData: []
+        registrosData: [],
+        procesando: false 
       }
     },
     methods: {
       getData(){
         var self = this 
+        self.registros = [];
+        self.registrosData = [];
+        self.procesando = true;
         Vue.showLoader();
 
         if( self.month == '0' || self.year == '0' ){
@@ -368,8 +386,9 @@
 
         self.checkedAll = false
         
-        axios.get(process.env.VUE_APP_API_HOST_JS + '/dbcsv.php',  'month='+ self.month + '&year=' + self.year )
+        axios.get(process.env.VUE_APP_API_HOST_JS + '/dbcsv.php?month='+ self.month + '&year=' + self.year )
         .then(async resp => {
+          self.procesando = false;
           Vue.hideLoader();
           //console.log( resp) ;
           //filtrar por entidad
@@ -383,7 +402,9 @@
           }
         })
         .catch(err => {
-            console.log( 'error' + err )
+          self.procesando = false;
+          Vue.hideLoader();
+          console.log( 'error' + err )
         })
       },
       changeCheckAll(ev){
@@ -423,7 +444,10 @@
         datos += '"ageb":"'+ registro['ageb'] +'", '
         datos += '"estd":"'+ registro['NOM_ENT'] +'", '
 
+        datos += '"cve_unica":"'+ registro['cve_unica'] +'", '
+        datos += '"total_ue":"'+ registro['total_ue'] +'", '
 
+        datos += '"v":"'+ registro['VIVIENDAS'] +'", '
         datos += '"pt":"'+ registro['POBTOT'] +'", '
         datos += '"ptf":"'+ registro['POBFEM'] +'", '
         datos += '"ptm":"'+ registro['POBMAS'] +'", '
@@ -458,7 +482,8 @@
         datos += '"11-30":"'+ registro['11 a 30 personas'] +'", '
         datos += '"31-50":"'+ registro['31 a 50 personas'] +'", '
         datos += '"51-100":"'+ registro['51 a 100 personas'] +'", '
-        datos += '"101-250":"'+ registro['101 a 250 personas'] +'"'
+        datos += '"101-250":"'+ registro['101 a 250 personas'] +'", '
+        datos += '"251":"'+ registro['251 y más personas'] +'"'
         datos += '}'
         
         var datosSend = '{ "DatosJSON": ['+datos+'] }';
@@ -474,7 +499,60 @@
             if( datos != ''){
               datos += ',';
             }
-            datos += '{"nmroCntr":"'+ self.registros[i]['NUMERO DE CONTROL'] +'", "curp":"'+ self.registros[i]['CURP'] +'"}'
+            //datos += '{"nmroCntr":"'+ self.registros[i]['NUMERO DE CONTROL'] +'", "curp":"'+ self.registros[i]['CURP'] +'"}'
+
+            datos += '{'
+            datos += '"nmroCntr":"'+ self.registros[i]['NUMERO DE CONTROL'] +'", '
+            datos += '"curp":"'+ self.registros[i]['CURP'] +'", '
+            datos += '"mncp":"'+ self.registros[i]['NOMBRE MUNICIPIO'] +'", '
+            datos += '"sexo":"'+ self.registros[i]['Sexo'] +'", '
+            datos += '"cp":"'+ self.registros[i]['p_code_ok'] +'", '
+            datos += '"edad":"'+ self.registros[i]['Edad'] +'", '
+            datos += '"ageb":"'+ self.registros[i]['ageb'] +'", '
+            datos += '"estd":"'+ self.registros[i]['NOM_ENT'] +'", '
+
+            datos += '"cve_unica":"'+ self.registros[i]['cve_unica'] +'", '
+            datos += '"total_ue":"'+ self.registros[i]['total_ue'] +'", '
+
+            datos += '"v":"'+ self.registros[i]['VIVIENDAS'] +'", '
+            datos += '"pt":"'+ self.registros[i]['POBTOT'] +'", '
+            datos += '"ptf":"'+ self.registros[i]['POBFEM'] +'", '
+            datos += '"ptm":"'+ self.registros[i]['POBMAS'] +'", '
+
+            datos += '"p18plus":"'+ self.registros[i]['P_18YMAS'] +'", '
+            datos += '"p18plusf":"'+ self.registros[i]['P_18YMAS_F'] +'", '
+            datos += '"p18plusm":"'+ self.registros[i]['P_18YMAS_M'] +'", '
+
+            datos += '"p60":"'+ self.registros[i]['P_60YMAS'] +'", '
+            datos += '"p60f":"'+ self.registros[i]['P_60YMAS_F'] +'", '
+            datos += '"p60m":"'+ self.registros[i]['P_60YMAS_M'] +'", '
+
+            datos += '"gpe":"'+ self.registros[i]['GRAPROES'] +'", '
+            datos += '"pea":"'+ self.registros[i]['PEA'] +'", '
+            datos += '"peaf":"'+ self.registros[i]['PEA_F'] +'", '
+            datos += '"peam":"'+ self.registros[i]['PEA_M'] +'", '
+
+            datos += '"po":"'+ self.registros[i]['POCUPADA'] +'", '
+            datos += '"pof":"'+ self.registros[i]['POCUPADA_F'] +'", '
+            datos += '"pom":"'+ self.registros[i]['POCUPADA_M'] +'", '
+
+            datos += '"pass":"'+ self.registros[i]['PDER_SS'] +'", '
+            datos += '"paIMSS":"'+ self.registros[i]['PDER_IMSS'] +'", '
+            datos += '"paISSSTE":"'+ self.registros[i]['PDER_ISTE'] +'", '
+            datos += '"paISSSTEe":"'+ self.registros[i]['PDER_ISTEE'] +'", '
+
+            datos += '"ncs":"'+ self.registros[i]['NIVEL PREDOMINANTE'] +'", '
+            datos += '"ipm":"---", '
+
+            datos += '"0-5":"'+ self.registros[i]['0 a 5 personas'] +'", '
+            datos += '"6-10":"'+ self.registros[i]['6 a 10 personas'] +'", '
+            datos += '"11-30":"'+ self.registros[i]['11 a 30 personas'] +'", '
+            datos += '"31-50":"'+ self.registros[i]['31 a 50 personas'] +'", '
+            datos += '"51-100":"'+ self.registros[i]['51 a 100 personas'] +'", '
+            datos += '"101-250":"'+ self.registros[i]['101 a 250 personas'] +'", '
+            datos += '"251":"'+ self.registros[i]['251 y más personas'] +'"'
+            datos += '}'
+
           }
         }
 
