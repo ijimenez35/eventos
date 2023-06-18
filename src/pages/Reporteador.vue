@@ -502,6 +502,8 @@
             //datos += '{"nmroCntr":"'+ self.registros[i]['NUMERO DE CONTROL'] +'", "curp":"'+ self.registros[i]['CURP'] +'"}'
 
             datos += '{'
+            datos += '"ID":"'+ self.registros[i]['ID'] +'", '
+            
             datos += '"nmroCntr":"'+ self.registros[i]['NUMERO DE CONTROL'] +'", '
             datos += '"curp":"'+ self.registros[i]['CURP'] +'", '
             datos += '"mncp":"'+ self.registros[i]['NOMBRE MUNICIPIO'] +'", '
