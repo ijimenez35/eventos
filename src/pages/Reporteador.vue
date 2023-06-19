@@ -433,8 +433,10 @@
       },
       generarDocumento( registro ){
         var  self = this
-        console.log( registro )
+        //console.log( registro )
         var datos = '{';
+        datos += '"ID":"'+ registro['ID'] +'", '
+
         datos += '"nmroCntr":"'+ registro['NUMERO DE CONTROL'] +'", '
         datos += '"curp":"'+ registro['CURP'] +'", '
         datos += '"mncp":"'+ registro['NOMBRE MUNICIPIO'] +'", '
@@ -568,6 +570,7 @@
 
       },
       vistaDocumento( datos ){
+        console.log( datos )
         var params = { "Datos": datos };
         Vue.emrgPstnNeva( { "method":'post', "params": params, "url": process.env.VUE_APP_API_HOST_JS + '/reporte.php' } );
       }
