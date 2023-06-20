@@ -50,7 +50,7 @@
                       <option value="3">Baja California Sur</option>
                       <option value="4">Campeche</option>
                       <option value="5">Coahuila de Zaragoza</option>
-                      <option value="6">Junio</option>
+                      <option value="6">Colima</option>
                       <option value="7">Chiapas</option>
                       <option value="8">Chihuahua</option>
                       <option value="9">Ciudad de México</option>
@@ -59,7 +59,7 @@
                       <option value="12">Guerrero</option>
                       <option value="13">Hidalgo</option>
                       <option value="14">Jalisco</option>
-                      <option value="15">México</option>
+                      <option value="15">Estado de México</option>
                       <option value="16">Michoacán de Ocampo</option>
                       <option value="17">Morelos</option>
                       <option value="18">Nayarit</option>
