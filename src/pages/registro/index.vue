@@ -45,53 +45,52 @@
                     <form @submit.prevent="registroUsuario($event, $data)" v-show="mailVerificado == true" >
                       <p>Registro de Usuario</p>
 
-                      <div class="form-outline mb-4">
-                        <input type="email" class="form-control" placeholder="Correo Electrónico" readonly="readonly" />
-                        <label class="form-label">Correo Electrónico</label>
+                      <div :class="'form-outline mb-4' + ($v.registro.correo.$invalid && submited?' has-error':'') ">
+                        <input type="email"  class="form-control" v-model="registro.correo" placeholder="Correo Electrónico" readonly="readonly" />
+                        <label :class="'form-label' + ($v.registro.correo.$invalid && submited?' text-danger':'') ">Correo Electrónico</label>
                       </div>
 
-                      <div class="form-outline mb-4">
-                        <input type="email" class="form-control" placeholder="Codigo enviado a tu Correo Electrónico" />
-                        <label class="form-label">Codigo enviado a tu Correo Electrónico</label>
+                      <div :class="'form-outline mb-4' + ($v.registro.codigo.$invalid && submited?' has-error':'') ">
+                        <input type="text" class="form-control" v-model="registro.codigo" placeholder="Codigo enviado a tu Correo Electrónico" />
+                        <label :class="'form-label' + ($v.registro.codigo.$invalid && submited?' text-danger':'') ">Código enviado a tu Correo Electrónico</label>
                       </div>
 
-                      <div class="form-outline mb-4">
-                        <input type="text" class="form-control" placeholder="Nombre" />
-                        <label class="form-label">Nombre</label>
+                      <div :class="'form-outline mb-4' + ($v.registro.nombre.$invalid && submited?' has-error':'') ">
+                        <input type="text" class="form-control" v-model="registro.nombre" placeholder="Nombre" />
+                        <label :class="'form-label' + ($v.registro.nombre.$invalid && submited?' text-danger':'') ">Nombre</label>
                       </div>
 
-                      <div class="form-outline mb-4">
-                        <input type="text" class="form-control" placeholder="Nombre" />
-                        <label class="form-label">Apellido Paterno</label>
+                      <div :class="'form-outline mb-4' + ($v.registro.aPaterno.$invalid && submited?' has-error':'') ">
+                        <input type="text" class="form-control" v-model="registro.aPaterno" placeholder="Nombre" />
+                        <label :class="'form-label' + ($v.registro.aPaterno.$invalid && submited?' text-danger':'') ">Apellido Paterno</label>
                       </div>
 
-                      <div class="form-outline mb-4">
-                        <input type="text" class="form-control" placeholder="Nombre" />
-                        <label class="form-label">Apellido Materno</label>
+                      <div :class="'form-outline mb-4' + ($v.registro.aMaterno.$invalid && submited?' has-error':'') ">
+                        <input type="text" class="form-control" v-model="registro.aMaterno" placeholder="Nombre" />
+                        <label :class="'form-label' + ($v.registro.aMaterno.$invalid && submited?' text-danger':'') ">Apellido Materno</label>
                       </div>
 
-                      <div class="form-outline mb-4">
-                        <input type="text" class="form-control" placeholder="Nombre" />
-                        <label class="form-label">Telefono (10 dígitos)</label>
+                      <div :class="'form-outline mb-4' + ($v.registro.telefono.$invalid && submited?' has-error':'') ">
+                        <input type="text" class="form-control" v-model="registro.telefono" placeholder="Nombre" />
+                        <label :class="'form-label' + ($v.registro.telefono.$invalid && submited?' text-danger':'') ">Telefono (10 dígitos)</label>
                       </div>
 
-                      <div class="form-outline mb-4">
-                        <input type="password" class="form-control" placeholder="Contraseña" />
-                        <label class="form-label">Contraseña (mínimo 6 caracteres, mayusculas, minusculas y números)</label>
+                      <div :class="'form-outline mb-4' + ($v.registro.clave.$invalid && submited?' has-error':'') ">
+                        <input type="password" class="form-control" v-model="registro.clave" placeholder="Contraseña" />
+                        <label :class="'form-label' + ($v.registro.clave.$invalid && submited?' text-danger':'') ">Contraseña (mínimo 6 caracteres, mayusculas, minusculas y números)</label>
                       </div>
 
-                      <div class="form-outline mb-4">
-                        <input type="password" class="form-control" placeholder="Confirma Contraseña" />
-                        <label class="form-label">Confirma tu Contraseña</label>
+                      <div :class="'form-outline mb-4' + (($v.registro.claveCnfr.$invalid || $v.registro.claveCnfr.sameAsPassword == false) && submited?' has-error':'') ">
+                        <input type="password" class="form-control" v-model="registro.claveCnfr" placeholder="Confirma Contraseña" />
+                        <label :class="'form-label' + ($v.registro.claveCnfr.$invalid && submited?' text-danger':'') ">Confirma tu Contraseña</label>
+                        <label class="form-label text-danger" v-if="!$v.registro.claveCnfr.sameAsPassword && registro.clave != '' && registro.claveCnfr != ''">&nbsp;&nbsp;( No coincide tu contraseña )</label>
                       </div>
 
                       <div class="text-center pt-1 mb-5 pb-1">
-                        <button @click="registrarse" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button">Registrarse</button>
+                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">Registrarse</button>
                       </div>
 
                     </form>
-
-
 
                   </div>
                 </div>
@@ -136,12 +135,13 @@
           
         },
         correoConfirmado: false, 
-
         submited:false,
         submitedMail:false,
         submitedRequestMail:false,
         mailVerificado:false,
         registro: {
+            correo: '',
+            codigo: '',
             nombre: '',
             aPaterno: '',
             aMaterno: '',
@@ -165,8 +165,11 @@
     computed: { 
         rules () {
             return {
+                correo: { required, email },
+                codigo: { required, minLength: minLength(3) },
                 nombre: { required, minLength: minLength(3) },
                 aPaterno: { required, minLength: minLength(5) },
+                aMaterno: { minLength: minLength(5) },
                 telefono: { required, minValue: minLength(10) },
                 clave: { required, minLength: minLength(6), goodPassword:(clave) => { 
                     return clave.length >= 6 &&
@@ -204,42 +207,31 @@
       verificaMail(e, data){
         var self = this
         self.submitedMail = true
-
-        //console.log( process.env.VUE_APP_API_HOST_JS )
-        //return
-        //Validamos formulario
         if(self.$v.correo.$invalid) return
 
         self.submitedRequestMail = false;
         e.preventDefault();
 
-        axios.post(process.env.VUE_APP_API_HOST_JS + '/ws/vrfcMail.php',  'mail='+ self.correo.correo )
+        axios.post(process.env.VUE_APP_API_HOST_JS + '/vrfcMail.php',  'mail='+ self.correo.correo )
         .then(async resp => {
+            //{"DatosJSON":[{"ID":"2","estatus":"actualizado","mensaje":"codigo actualizado","correo":"ijimenez35@gmail.com","confirmacionCorreo":"enviada"}]}
             self.submitedRequestMail = true;
-            if( resp.data.DatosJSON.length == 0 ){
+            if( resp.data.DatosJSON.length > 0){
+              if( resp.data.DatosJSON[0].estatus == 'insertado' || resp.data.DatosJSON[0].estatus == 'actualizado' ){ //No existe y procedemos al registro del usuario
                 self.mailVerificado = true;
+                self.registro.correo = self.correo.correo;
+              }else{
+                Vue.alert({ 'title': 'Aviso', 'html': 'El correo electronico proporcionado ya existe, por favor verifique la información capturada',
+                    'buttons': [
+                        {
+                            title: 'Aceptar',
+                            handler: () => { }
+                        }
+                    ]
+                })
+              }
             }else{
-                if( resp.data.DatosJSON[0].estatus == 'inactivo' ){
-                    Vue.alert({ 'title': 'Aviso', 'html': 'El usuario ya existe y este se encuentra inactivo, por favor contacte a su administrador',
-                        'buttons': [
-                            {
-                                title: 'Aceptar',
-                                handler: () => { }
-                            }
-                        ]
-                    })
-                }else if( resp.data.DatosJSON[0].estatus == 'existe' ){ //Existe correo en el sistema
-                  Vue.alert({ 'title': 'Aviso', 'html': 'El correo electronico proporcionado ya existe, por favor verifique la información capturada',
-                      'buttons': [
-                          {
-                              title: 'Aceptar',
-                              handler: () => { }
-                          }
-                      ]
-                  })
-                }else if( resp.data.DatosJSON[0].estatus == 'insertado' ){ //No existe y procedemos al registro del usuario
-                  self.mailVerificado = true;
-                }  
+              console.log( 'error JSON vacio' )
             }
         })
         .catch(err => {
@@ -253,7 +245,7 @@
         if(self.$v.registro.$invalid) return
         e.preventDefault();
         
-        axios.post(process.env.VUE_APP_API_HOST_JS + '/ws/altaUsuario.php',  'correo='+ self.correo.correo + '' + '&nombre='+ self.registro.nombre  + '&aPaterno='+ self.registro.aPaterno + '' + '&aMaterno='+ self.registro.aMaterno + '' + '&telefono='+ self.registro.telefono + '' + '&clave='+ self.registro.clave + ''  )
+        axios.post(process.env.VUE_APP_API_HOST_JS + '/ws/altaUsuario.php',  'correo='+ self.registro.correo + ''  + '&codigo='+ self.registro.codigo + '&nombre='+ self.registro.nombre  + '&aPaterno='+ self.registro.aPaterno + '' + '&aMaterno='+ self.registro.aMaterno + '' + '&telefono='+ self.registro.telefono + '' + '&clave='+ self.registro.clave + ''  )
         .then(async resp => {
             if( resp.data.DatosJSON[0].estatus == 'insertado' ){
                 let correo = self.correo.correo;
