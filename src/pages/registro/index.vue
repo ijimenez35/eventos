@@ -204,6 +204,17 @@
         //this.$router.push("/admin/")
       },
 
+      reenviarCodigo(){
+        var self = this
+        axios.post(process.env.VUE_APP_API_HOST_JS + '/vrfcMail.php', 'mail='+ self.correo.correo+'&accion=1' )
+        .then(async resp => {
+          console.log( 'Codigo reenviado con exito')
+        })
+        .catch(err => {
+          console.log( 'error, no se pudo reenviar el codigo' + err )
+        })
+      },
+
       verificaMail(e, data){
         var self = this
         self.submitedMail = true
@@ -212,7 +223,7 @@
         self.submitedRequestMail = false;
         e.preventDefault();
 
-        axios.post(process.env.VUE_APP_API_HOST_JS + '/vrfcMail.php',  'mail='+ self.correo.correo )
+        axios.post(process.env.VUE_APP_API_HOST_JS + '/vrfcMail.php', 'mail='+ self.correo.correo )
         .then(async resp => {
             //{"DatosJSON":[{"ID":"2","estatus":"actualizado","mensaje":"codigo actualizado","correo":"ijimenez35@gmail.com","confirmacionCorreo":"enviada"}]}
             self.submitedRequestMail = true;
@@ -245,12 +256,12 @@
         if(self.$v.registro.$invalid) return
         e.preventDefault();
         
-        axios.post(process.env.VUE_APP_API_HOST_JS + '/ws/altaUsuario.php',  'correo='+ self.registro.correo + ''  + '&codigo='+ self.registro.codigo + '&nombre='+ self.registro.nombre  + '&aPaterno='+ self.registro.aPaterno + '' + '&aMaterno='+ self.registro.aMaterno + '' + '&telefono='+ self.registro.telefono + '' + '&clave='+ self.registro.clave + ''  )
+        axios.post(process.env.VUE_APP_API_HOST_JS + '/altaUsuario.php',  'correo='+ self.registro.correo + ''  + '&codigo='+ self.registro.codigo + '&nombre='+ self.registro.nombre  + '&aPaterno='+ self.registro.aPaterno + '' + '&aMaterno='+ self.registro.aMaterno + '' + '&telefono='+ self.registro.telefono + '' + '&clave='+ self.registro.clave + ''  )
         .then(async resp => {
             if( resp.data.DatosJSON[0].estatus == 'insertado' ){
                 let correo = self.correo.correo;
                 self.resetVariables()
-                Vue.alert({ 'title': 'Aviso', 'html': 'Usuario dado de alta con exito, por favor ingrese a su correo electronico ('+correo+') para concluir con su registro.',
+                Vue.alert({ 'title': 'Aviso', 'html': 'Usuario registrado con exito, por favor inicie sesion en el sistema.',
                     'buttons': [
                         {
                             title: 'Aceptar',
@@ -259,9 +270,18 @@
                     ]
                 })
             }else if( resp.data.DatosJSON[0].estatus == 'error' ){
-                if(  resp.data.DatosJSON[0].mensaje == 'correo existente' ){
+                if( resp.data.DatosJSON[0].mensaje == 'correo no confirmado' ){
+                  Vue.alert({ 'title': 'Aviso', 'html': 'Codigo de verificación incorrecto , por favor verifique la información capturada',
+                      'buttons': [
+                          {
+                              title: 'Aceptar',
+                              handler: () => { }
+                          }
+                      ]
+                  })
+                }else if( resp.data.DatosJSON[0].mensaje == 'correo existente' ){
                     self.resetVariables()
-                    Vue.alert({ 'title': 'Aviso', 'html': 'Este correo electronico ya existe en el sistema, por favor verifique la información capturada',
+                    Vue.alert({ 'title': 'Aviso', 'html': 'Este correo electroníco ya existe en el sistema, por favor verifique la información capturada',
                         'buttons': [
                             {
                                 title: 'Aceptar',
