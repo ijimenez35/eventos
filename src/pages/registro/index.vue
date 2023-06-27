@@ -28,17 +28,20 @@
                       <div :class="'form-outline mb-4' + (($v.correo.correoCnfr.$invalid || $v.correo.correoCnfr.sameAsMail == false) && submitedMail?' has-error':'') " >
                         <input id="form2Example2" type="email" v-model="correo.correoCnfr" class="form-control" placeholder="Confirma tu Correo Electrónico" required/>
                         <label :class="'form-label' + ($v.correo.correoCnfr.$invalid && submitedMail?' text-danger':'') ">Confirma tu Correo Electrónico</label>
-                        <label class="form-label text-danger" v-if="!$v.correo.correoCnfr.sameAsMail && correo.correo != '' && correo.correoCnfr != ''">&nbsp;&nbsp;( No coincide tu correo electronico )</label>
+                        <label class="form-label text-danger" v-if="!$v.correo.correoCnfr.sameAsMail && correo.correo != '' && correo.correoCnfr != ''">&nbsp;&nbsp;( No coincide tu correo electrónico )</label>
                         <label class="form-label text-danger" v-if="!$v.correo.correoCnfr.required && submitedMail && correo.correo != '' && correo.correoCnfr == ''">&nbsp;&nbsp;( Es necesario confirmar el correo electrónico )</label>
                       </div>
 
                       <p class="alert alert-danger control-label" v-if="$v.correo.$invalid && submitedMail">Existen campos pendientes de llenar en el formulario</p>
-
-                      <p class="alert alert-warning control-label" v-if="mailVerificado == false && submitedRequestMail == true">El correo electronico proporcionado ya existe en el sistema, por favor verifique la información capturada</p>
+                      <p class="alert alert-danger control-label" v-if="mailVerificado == false && submitedRequestMail == true && mailExiste == true">El correo electrónico proporcionado ya existe en el sistema, por favor verifique la información capturada</p>
+                      <p class="alert alert-warning control-label" v-if="codigoEnviado == true && submitedRequestMail == true">Ya ha sido enviado un mensaje a su correo con el código de verificación.</p>
                       
                       <div class="text-center pt-1 mb-5 pb-1">
-                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">Verificar Correo</button>
+                        <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit" >Verificar Correo</button>
+                        <button class="btn btn-success btn-block fa-lg gradient-custom-2 mb-3" type="button" @click="registrarse" v-if="codigoEnviado == true && submitedRequestMail == true">Ya tengo mi Código !</button>
+                        <button class="btn btn-warning btn-block fa-lg gradient-custom-2 mb-3" type="button" @click="reenviarCodigo(correo.correo)" v-if="codigoEnviado == true && submitedRequestMail == true">Enviar otro Código !</button>
                       </div>
+
 
                     </form>
 
@@ -50,9 +53,20 @@
                         <label :class="'form-label' + ($v.registro.correo.$invalid && submited?' text-danger':'') ">Correo Electrónico</label>
                       </div>
 
+                      <!---
                       <div :class="'form-outline mb-4' + ($v.registro.codigo.$invalid && submited?' has-error':'') ">
                         <input type="text" class="form-control" v-model="registro.codigo" placeholder="Codigo enviado a tu Correo Electrónico" />
                         <label :class="'form-label' + ($v.registro.codigo.$invalid && submited?' text-danger':'') ">Código enviado a tu Correo Electrónico</label>
+                      </div>
+                      -->
+                      
+
+                      <div :class="'input-group mb-4' + ($v.registro.codigo.$invalid && submited?' has-error':'') ">
+                        <input type="text" class="form-control" v-model="registro.codigo" placeholder="Código de Verificación" minlength="3" maxlength="5">
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary" type="button" style="padding: 6px 16px;" @click="reenviarCodigo(registro.correo)">Enviar Otro</button>
+                        </div>
+                        <label style="margin-top:5px;" :class="'form-label' + ($v.registro.codigo.$invalid && submited?' text-danger':'') ">Código enviado a tu Correo Electrónico</label>
                       </div>
 
                       <div :class="'form-outline mb-4' + ($v.registro.nombre.$invalid && submited?' has-error':'') ">
@@ -61,27 +75,27 @@
                       </div>
 
                       <div :class="'form-outline mb-4' + ($v.registro.aPaterno.$invalid && submited?' has-error':'') ">
-                        <input type="text" class="form-control" v-model="registro.aPaterno" placeholder="Nombre" />
+                        <input type="text" class="form-control" v-model="registro.aPaterno" placeholder="Apellido Paterno" />
                         <label :class="'form-label' + ($v.registro.aPaterno.$invalid && submited?' text-danger':'') ">Apellido Paterno</label>
                       </div>
 
                       <div :class="'form-outline mb-4' + ($v.registro.aMaterno.$invalid && submited?' has-error':'') ">
-                        <input type="text" class="form-control" v-model="registro.aMaterno" placeholder="Nombre" />
+                        <input type="text" class="form-control" v-model="registro.aMaterno" placeholder="Apellido Materno" />
                         <label :class="'form-label' + ($v.registro.aMaterno.$invalid && submited?' text-danger':'') ">Apellido Materno</label>
                       </div>
 
                       <div :class="'form-outline mb-4' + ($v.registro.telefono.$invalid && submited?' has-error':'') ">
-                        <input type="text" class="form-control" v-model="registro.telefono" placeholder="Nombre" />
+                        <input type="text" class="form-control" v-model="registro.telefono" placeholder="Telefono (10 dígitos)" minlength="10" maxlength="10" />
                         <label :class="'form-label' + ($v.registro.telefono.$invalid && submited?' text-danger':'') ">Telefono (10 dígitos)</label>
                       </div>
 
                       <div :class="'form-outline mb-4' + ($v.registro.clave.$invalid && submited?' has-error':'') ">
-                        <input type="password" class="form-control" v-model="registro.clave" placeholder="Contraseña" />
+                        <input type="password" class="form-control" v-model="registro.clave" placeholder="Contraseña (mínimo 6 caracteres, mayusculas, minusculas y números)" />
                         <label :class="'form-label' + ($v.registro.clave.$invalid && submited?' text-danger':'') ">Contraseña (mínimo 6 caracteres, mayusculas, minusculas y números)</label>
                       </div>
 
                       <div :class="'form-outline mb-4' + (($v.registro.claveCnfr.$invalid || $v.registro.claveCnfr.sameAsPassword == false) && submited?' has-error':'') ">
-                        <input type="password" class="form-control" v-model="registro.claveCnfr" placeholder="Confirma Contraseña" />
+                        <input type="password" class="form-control" v-model="registro.claveCnfr" placeholder="Confirma tu Contraseña" />
                         <label :class="'form-label' + ($v.registro.claveCnfr.$invalid && submited?' text-danger':'') ">Confirma tu Contraseña</label>
                         <label class="form-label text-danger" v-if="!$v.registro.claveCnfr.sameAsPassword && registro.clave != '' && registro.claveCnfr != ''">&nbsp;&nbsp;( No coincide tu contraseña )</label>
                       </div>
@@ -113,9 +127,10 @@
   </div>
 </template>
 <script>
+  import Vue from 'vue'
   import axios from 'axios'
   import { validationMixin } from 'vuelidate'
-  import { required, minLength, minValue, sameAs, email } from 'vuelidate/lib/validators'
+  import { required, minLength, minValue, sameAs, email, numeric } from 'vuelidate/lib/validators'
 
   export default {
     props: {
@@ -132,13 +147,13 @@
       return {
         user: {
           email: 'correo@dominio.com'
-          
         },
         correoConfirmado: false, 
         submited:false,
         submitedMail:false,
         submitedRequestMail:false,
         mailVerificado:false,
+        codigoEnviado:false,
         registro: {
             correo: '',
             codigo: '',
@@ -166,11 +181,11 @@
         rules () {
             return {
                 correo: { required, email },
-                codigo: { required, minLength: minLength(3) },
+                codigo: { required, minLength: minLength(3), numeric },
                 nombre: { required, minLength: minLength(3) },
                 aPaterno: { required, minLength: minLength(5) },
                 aMaterno: { minLength: minLength(5) },
-                telefono: { required, minValue: minLength(10) },
+                telefono: { required, minLength: minLength(10), numeric },
                 clave: { required, minLength: minLength(6), goodPassword:(clave) => { 
                     return clave.length >= 6 &&
                     /[a-z]/.test(clave) &&
@@ -188,6 +203,29 @@
         }
     },
     methods: {
+      resetVariables(){
+        var self = this;
+        self.correoConfirmado = false
+        self.submited = false
+        self.submitedMail = false
+        self.submitedRequestMail = false
+        self.mailVerificado = false
+        self.codigoEnviado = false
+        self.registro = {
+            correo: '',
+            codigo: '',
+            nombre: '',
+            aPaterno: '',
+            aMaterno: '',
+            telefono: '',
+            clave: '',
+            claveCnfr: ''
+        },
+        self.correo = {
+            correo: '',
+            correoCnfr: ''
+        }
+      },
       login(){
         this.$router.push("/admin/")
       },
@@ -201,23 +239,32 @@
         this.correoConfirmado = true;
       },
       registrarse(){
-        //this.$router.push("/admin/")
-      },
-
-      reenviarCodigo(){
         var self = this
-        axios.post(process.env.VUE_APP_API_HOST_JS + '/vrfcMail.php', 'mail='+ self.correo.correo+'&accion=1' )
-        .then(async resp => {
-          console.log( 'Codigo reenviado con exito')
+        self.mailVerificado = true;
+        self.registro.correo = self.correo.correo;
+      },
+      reenviarCodigo(correo){
+        var self = this
+        axios.post(process.env.VUE_APP_API_HOST_JS + '/vrfcMail.php', 'mail='+ correo+'&accion=1' )
+        .then(async respReenviarCodigo => {
+          if( respReenviarCodigo.data.DatosJSON.length > 0){
+            if( respReenviarCodigo.data.DatosJSON[0].estatus == 'insertado' || respReenviarCodigo.data.DatosJSON[0].estatus == 'actualizado' ){
+              Vue.alert({ 'title': 'Aviso', 'html': 'Código enviado al correo porporcionado:<br> <b>'+correo+'</b> <br>Por favor verifique su bandeja de entrada.', 'typeModal': 'modal-md',
+                  'buttons': [ { title: 'Aceptar' } ]
+              })
+            }
+          }
         })
         .catch(err => {
           console.log( 'error, no se pudo reenviar el codigo' + err )
         })
       },
-
       verificaMail(e, data){
         var self = this
         self.submitedMail = true
+        self.mailVerificado = false
+        self.mailExiste = false
+        self.codigoEnviado = false
         if(self.$v.correo.$invalid) return
 
         self.submitedRequestMail = false;
@@ -228,17 +275,64 @@
             //{"DatosJSON":[{"ID":"2","estatus":"actualizado","mensaje":"codigo actualizado","correo":"ijimenez35@gmail.com","confirmacionCorreo":"enviada"}]}
             self.submitedRequestMail = true;
             if( resp.data.DatosJSON.length > 0){
-              if( resp.data.DatosJSON[0].estatus == 'insertado' || resp.data.DatosJSON[0].estatus == 'actualizado' ){ //No existe y procedemos al registro del usuario
-                self.mailVerificado = true;
-                self.registro.correo = self.correo.correo;
-              }else{
-                Vue.alert({ 'title': 'Aviso', 'html': 'El correo electronico proporcionado ya existe, por favor verifique la información capturada',
+              if( resp.data.DatosJSON[0].estatus == 'enviado' ){
+                self.codigoEnviado = true
+                Vue.alert({ 'title': 'Aviso', 'html': 'Ya ha sido enviado un mensaje al correo electrónico:<br> <b>'+self.correo.correo+'</b> <br> Por favor verifica la bandeja para obtener el código de verificación y asi continuar.', 'typeModal': 'modal-md', 
                     'buttons': [
                         {
-                            title: 'Aceptar',
-                            handler: () => { }
+                          class: 'btn-success', 
+                          title: 'Ya tengo mi Código !',
+                          handler: () => { 
+                            self.registrarse()
+                            //self.mailVerificado = true;
+                            //self.registro.correo = self.correo.correo;
+                          }
+                        },
+                        {
+                          cerrar: false, title: 'Enviar otro Código',
+                          handler: () => {
+                            axios.post(process.env.VUE_APP_API_HOST_JS + '/vrfcMail.php', 'mail='+ self.correo.correo+'&accion=1' )
+                            .then(async respRnvr => {
+                              if( respRnvr.data.DatosJSON.length > 0){
+                                if( resp.data.DatosJSON[0].estatus == 'insertado' || resp.data.DatosJSON[0].estatus == 'actualizado' ){
+                                  self.codigoEnviado = true
+                                  self.mailVerificado = true;
+                                  self.registro.correo = self.correo.correo;
+                                  Vue.alert({ 'title': 'Aviso', 'html': 'Código enviado al correo porporcionado:<br> <b>'+self.registro.correo+'</b> <br>Por favor verifique su bandeja de entrada.', 'typeModal': 'modal-md',
+                                    'buttons': [ { title: 'Aceptar' } ]
+                                  })
+                                }else{
+                                  self.mailExiste = true
+                                  Vue.alert({ 'title': 'Aviso', 'html': 'El correo electrónico proporcionado se encuentra registrado en el sistema, por favor verifique la información capturada',
+                                      'buttons': [ { title: 'Aceptar', handler: () => { } } ]
+                                  })
+                                }
+                              }else{
+                                console.log( 'error en vrfcMail' )
+                              }
+                            })
+                            .catch(err => {
+                              console.log( 'error, no se pudo reenviar el codigo' + err )
+                            })
+                          }
                         }
                     ]
+                })
+                
+              }else if( resp.data.DatosJSON[0].estatus == 'insertado' || resp.data.DatosJSON[0].estatus == 'actualizado' ){ //No existe y procedemos al registro del usuario
+                self.codigoEnviado = true;
+                self.mailVerificado = true;
+                self.registro.correo = self.correo.correo;
+                Vue.alert({ 'title': 'Aviso', 'html': 'Código enviado al correo porporcionado:<br> <b>'+self.registro.correo+'</b> <br>Por favor verifique su bandeja de entrada.', 'typeModal': 'modal-md',
+                  'buttons': [ { title: 'Aceptar' } ]
+                })
+              }else{
+                self.mailExiste = true
+                //self.correo.correo = '';
+                //self.correo.correoCnfr = '';
+                //self.submitedMail = false;
+                Vue.alert({ 'title': 'Aviso', 'html': 'El correo electrónico proporcionado se encuentra registrado en el sistema, por favor verifique la información capturada',
+                    'buttons': [ { title: 'Aceptar', handler: () => { } } ]
                 })
               }
             }else{
@@ -251,27 +345,27 @@
       },
       registroUsuario(e, data){
         var self = this
+
         this.submited = true
         if(self.$v.correo.$invalid) return
         if(self.$v.registro.$invalid) return
         e.preventDefault();
         
-        axios.post(process.env.VUE_APP_API_HOST_JS + '/altaUsuario.php',  'correo='+ self.registro.correo + ''  + '&codigo='+ self.registro.codigo + '&nombre='+ self.registro.nombre  + '&aPaterno='+ self.registro.aPaterno + '' + '&aMaterno='+ self.registro.aMaterno + '' + '&telefono='+ self.registro.telefono + '' + '&clave='+ self.registro.clave + ''  )
+        axios.post(process.env.VUE_APP_API_HOST_JS + '/registro.php',  'correo='+ self.registro.correo + ''  + '&codigo='+ self.registro.codigo + '&nombre='+ self.registro.nombre  + '&aPaterno='+ self.registro.aPaterno + '' + '&aMaterno='+ self.registro.aMaterno + '' + '&telefono='+ self.registro.telefono + '' + '&clave='+ self.registro.clave + ''  )
         .then(async resp => {
             if( resp.data.DatosJSON[0].estatus == 'insertado' ){
-                let correo = self.correo.correo;
                 self.resetVariables()
                 Vue.alert({ 'title': 'Aviso', 'html': 'Usuario registrado con exito, por favor inicie sesion en el sistema.',
                     'buttons': [
                         {
-                            title: 'Aceptar',
+                            title: 'Iniciar Sesión',
                             handler: () => { this.$router.push('/login/'); this.$router.go(0) }
                         }
                     ]
                 })
             }else if( resp.data.DatosJSON[0].estatus == 'error' ){
                 if( resp.data.DatosJSON[0].mensaje == 'correo no confirmado' ){
-                  Vue.alert({ 'title': 'Aviso', 'html': 'Codigo de verificación incorrecto , por favor verifique la información capturada',
+                  Vue.alert({ 'title': 'Aviso', 'html': 'Codigo de verificación incorrecto, por favor verifique la información capturada',
                       'buttons': [
                           {
                               title: 'Aceptar',
@@ -279,7 +373,7 @@
                           }
                       ]
                   })
-                }else if( resp.data.DatosJSON[0].mensaje == 'correo existente' ){
+                }else if( resp.data.DatosJSON[0].mensaje == 'correo existe' ){
                     self.resetVariables()
                     Vue.alert({ 'title': 'Aviso', 'html': 'Este correo electroníco ya existe en el sistema, por favor verifique la información capturada',
                         'buttons': [
