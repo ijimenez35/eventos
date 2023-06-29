@@ -65,6 +65,7 @@
   </nav>
 </template>
 <script>
+  import store from '@/store'
   export default {
     computed: {
       routeName () {
@@ -97,7 +98,7 @@
         this.$sidebar.displaySidebar(false)
       },
       logOut(){
-        this.$router.push("/login/")
+        store.dispatch('AUTH_LOGOUT').then(() => this.$router.push("/login/"));
       }
     }
   }

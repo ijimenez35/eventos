@@ -43,7 +43,7 @@
     props: {
       title: {
         type: String,
-        default: 'Usuario'
+        default: 'Solucion Afore'
       },
       backgroundColor: {
         type: String,

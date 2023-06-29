@@ -30,11 +30,20 @@ import RecoverPw from 'src/pages/RecoverPw/index.vue'
 
 let entryUrl = null;
 
+const ifLogin = (to, from, next) => {
+  if( store.getters.isAuthenticated ){
+    next({ path: '/' })
+  }else{
+    next( ) 
+  }
+}
+
 const ifAuthenticated = (to, from, next) => {
-  next( )
-  return
+  //next( ) return
   console.log( store.getters.isAuthenticated )
   console.log( store.getters.token )
+
+  /*
   if( store.getters.isAuthenticated && store.getters.correoConfirmado == '0' && to.name != 'ConfirmaCorreo' ){
       if(entryUrl){
           next({
@@ -87,32 +96,61 @@ const ifAuthenticated = (to, from, next) => {
       }
       
       return true
-  }else {
+  }
+  */
+  if( store.getters.isAuthenticated ){
+    //Esta logueado y tiene entidad seleccionada
+    if (entryUrl) {
+        const url = entryUrl;
+        entryUrl = null;
+        window.location.href = url
+    }
+    
+    if (to.hash.includes("#!/") ){
+        next(to.hash.replace('#!/', ''));
+    }else{
+        next( )
+    }
+    
+    return true
+  }
+  else {
       if (to.hash.includes("#!/") ){
           next(to.hash.replace('#!/', ''));
       }else{
-          entryUrl = to.path + objectToQuerystring( to.query );
-          if( entryUrl == '' || entryUrl == '/' ){
-              entryUrl = null;
-              next('/login/')
-          }else{
-              if( to.query.roles ){
-                  next({
-                      path: '/login/',
-                      query: {
-                          roles: to.query.roles,
-                          redirect: entryUrl.replace('&roles=false','').replace('&roles=true','').replace('?roles=false&','?').replace('?roles=true&','?').replace('?roles=false','').replace('?roles=true','')
-                      }
-                  })
-              }else{
-                  next({
-                      path: '/login/',
-                      query: {
-                         redirect: entryUrl 
-                      }
-                  })
-              }
-          }
+
+        var objectToQuerystring = function(obj) {
+            return Object.keys(obj).reduce(function(str, key, i) {
+                var delimiter, val;
+                delimiter = i === 0 ? "?" : "&";
+                key = encodeURIComponent(key);
+                val = encodeURIComponent(obj[key]);
+                return [str, delimiter, key, "=", val].join("");
+            }, "");
+        };
+
+        entryUrl = to.path + objectToQuerystring( to.query );
+        if( entryUrl == '' || entryUrl == '/' ){
+            entryUrl = null;
+            next('/login/')
+        }else{
+            if( to.query.roles ){
+                next({
+                    path: '/login/',
+                    query: {
+                        roles: to.query.roles,
+                        redirect: entryUrl.replace('&roles=false','').replace('&roles=true','').replace('?roles=false&','?').replace('?roles=true&','?').replace('?roles=false','').replace('?roles=true','')
+                    }
+                })
+            }else{
+                next({
+                    path: '/login/',
+                    query: {
+                        redirect: entryUrl 
+                    }
+                })
+            }
+        }
       }
       return false
   }
@@ -122,12 +160,14 @@ const routes = [
   {
     path: '/login',
     alias: "Login",
-    component: Login
+    component: Login,
+    beforeEnter: ifLogin
   },
   {
     path: '/registro',
     alias: "Registro",
-    component: Registro
+    component: Registro,
+    beforeEnter: ifLogin
   },
   {
     path: '/recoverPw',

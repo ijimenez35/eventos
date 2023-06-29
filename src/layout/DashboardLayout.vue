@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper">
-    <side-bar>
+    <side-bar :title="nombreUsuario">
       <mobile-menu slot="content"></mobile-menu>
       <sidebar-link to="/admin/reporteador">
-        <i class="nc-icon nc-chart-pie-35"></i>
+        <i class="nc-icon nc-notes"></i>
         <p>Reporteador</p>
       </sidebar-link>
 
@@ -13,31 +13,37 @@
       </sidebar-link>
 
       <sidebar-link to="/admin/usuarios">
-        <i class="nc-icon nc-notes"></i>
+        <i class="nc-icon nc-badge"></i>
         <p>Administrar Usuarios</p>
       </sidebar-link>
 
       <sidebar-link to="/admin/usuarios">
-        <i class="nc-icon nc-notes"></i>
+        <i class="nc-icon nc-app"></i>
         <p>Bases de Datos</p>
       </sidebar-link>
 
       <sidebar-link to="/admin/usuarios">
-        <i class="nc-icon nc-notes"></i>
+        <i class="nc-icon nc-tv-2"></i>
         <p>HTML's</p>
       </sidebar-link>
 
       <sidebar-link to="/admin/usuarios">
-        <i class="nc-icon nc-notes"></i>
+        <i class="nc-icon nc-email-85"></i>
         <p>Correos</p>
       </sidebar-link>
 
       <sidebar-link to="/admin/usuarios">
-        <i class="nc-icon nc-notes"></i>
+        <i class="nc-icon nc-album-2"></i>
         <p>Imagenes</p>
       </sidebar-link>
 
+
       <!--
+      <sidebar-link to="/admin/reporteador">
+        <i class="nc-icon nc-chart-pie-35 nc-notes"></i>
+        <p>Reporteador</p>
+      </sidebar-link>
+
       <sidebar-link to="/admin/typography">
         <i class="nc-icon nc-paper-2"></i>
         <p>Typography</p>
@@ -83,7 +89,13 @@
   import ContentFooter from './ContentFooter.vue'
   import DashboardContent from './Content.vue'
   import MobileMenu from './MobileMenu.vue'
+  import store from '@/store'
   export default {
+    data () {
+      return {
+        nombreUsuario: store.getters.fullName
+      }
+    },
     components: {
       TopNavbar,
       ContentFooter,

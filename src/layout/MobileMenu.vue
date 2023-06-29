@@ -35,12 +35,12 @@
   </ul>
 </template>
 <script>
+  import store from '@/store'
   export default {
     name: 'mobile-menu',
     methods: {
       logOut(){
-        console.log('qu')
-        this.$router.push("/login/")
+        store.dispatch('AUTH_LOGOUT').then(() => this.$router.push("/login/"));
       }
     },
   }

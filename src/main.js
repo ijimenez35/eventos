@@ -16,6 +16,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import App from "./App.vue";
+import axios from 'axios'
 
 // LightBootstrap plugin
 import LightBootstrap from "./light-bootstrap-main";
@@ -233,7 +234,25 @@ const VueAjax = {
           }
           window.open(ruta + parametrosGET);
       }
-    }
+    };
+
+    Vue.requestJSON = function (params) {
+      // some logic ...
+      let data = { '_': Math.random() }
+
+      $.extend(data, params)
+
+      //delete axios.defaults.headers.common['Authorization-Backdoor']
+      axios.defaults.headers.common['Authorization'] = store.getters.token  
+      return axios.get(process.env.VUE_APP_API_HOST_JS + '/rqstGet.php', {
+        params: data
+      }).then(async resp => resp.data.DatosJSON)
+        .catch(err => {
+          //Vue.hideLoader()
+          console.log('error en mySQL')
+        })
+
+    };
   }
 }
 

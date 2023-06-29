@@ -68,6 +68,7 @@
 <script>
   import Vue from 'vue'
   import axios from 'axios'
+  import store from '@/store'
   import { validationMixin } from 'vuelidate'
   import { required, email } from 'vuelidate/lib/validators'
 
@@ -113,37 +114,47 @@
         this.mensajeUsuario = '';
         if(self.$v.user.$invalid) return
         //e.preventDefault();
-
         Vue.showLoader();
-        axios.post(process.env.VUE_APP_API_HOST_JS + '/login.php',  'email='+ self.user.email + ''  + '&cntr='+ self.user.cntr  )
-        .then( respLogin => {
-          Vue.hideLoader();
-          //console.log( respLogin )
-          //console.log( respLogin.data.estatus )
-
-          if( respLogin ){
-            if( respLogin.data ){
-              if( respLogin.data.estatusUsuario ){
-                if( respLogin.data.estatusUsuario == 'exito' ){
-                  if( respLogin.data.habilitado == '0' ){
-                    Vue.alert({ 'title': 'Aviso', 'html': 'Es necesario que se comunique con el adminsitrador del sistema para que confirme su acceso al sistema.',
-                        'buttons': [ { title: 'Aceptar', handler: () => { } } ]
+        store.dispatch('AUTH_REQUEST', self.user )
+            .then(() => {
+              Vue.hideLoader();
+              console.log('entra al sistema')
+              this.$router.push("/")
+                /*
+                if( store.getters.correoConfirmado == '0' ){
+                    this.$router.push('/confirmaCorreo/')
+                }else if( store.getters.cntrTmpr == '1' ){
+                    this.$router.push('/contraseniaTemporal/')
+                }else if( store.getters.roles.length == 0 ){
+                    //console.log('sin roles')
+                    Vue.alert({ 'title': 'Aviso', 'html': 'El Usuario No cuenta con ningun rol asignado, por favor contacta al administrador del Sistema para que te sea asignado tu correspondiente Rol (Liga,Equipo,Arbitro,etc)',
+                        'buttons': [
+                            {
+                                title: 'Aceptar',
+                                handler: () => {  }
+                            }
+                        ]
                     })
-                  }else{
-                    //Ir al administrador 
-                    this.$router.push("/")
-                  }
+                }else if ( store.getters.idRol != 0 ){
+                    this.$router.push('/'); this.$router.go(0)
+                    //this.$router.push('/roles/')
                 }else{
-                  self.errorLogin()
+                    this.$router.push('/roles/')
                 }
-              }else{ self.errorComunicacion() }
-            }else{ self.errorComunicacion() }
-          }else{ self.errorComunicacion() }
-        })
-        .catch(err => {
-          self.errorComunicacion()
-          Vue.hideLoader();
-          console.log( 'error' )
+                */
+            }).catch(error => {
+              Vue.hideLoader();
+              console.log('error');
+              console.log(error);
+              // error.code == "ERR_NETWORK" Error de conexion
+              if( error == 'Usuario invalido'){
+                self.errorLogin()
+              }else if ( error == 'Usuario inhabilitado'){
+                self.errorInhabilitado()
+              }else{
+                self.errorComunicacion()
+              }
+              //$.toast({ heading: 'Aviso', text: 'Usuario/ contraseña incorrecto', hideAfter: 5000, position: 'top-center' });
         })
       },
       errorLogin(){
@@ -152,8 +163,14 @@
             'buttons': [ { title: 'Aceptar', handler: () => { } } ]
         })
       },
+      errorInhabilitado(){
+        this.mensajeUsuario = 'Usuario inhabilitado';
+        Vue.alert({ 'title': 'Aviso', 'html': 'Es necesario que se comunique con el adminsitrador del sistema para que confirme su acceso al sistema.',
+            'buttons': [ { title: 'Aceptar', handler: () => { } } ]
+        })
+      },
       errorComunicacion(){
-        this.mensajeUsuario = 'No se pudo estableces una conexion al servidor';
+        this.mensajeUsuario = 'No se pudo establecer conexión al servidor';
       },
       olvidaste(){
         Vue.showLoader();
