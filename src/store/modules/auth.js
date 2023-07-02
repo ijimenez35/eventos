@@ -19,7 +19,8 @@ const state = {
   roles: [],
   correoConfirmado: '0',
   habilitado: '0',
-  cntrTmpr: '0' 
+  cntrTmpr: '0', 
+  administrador: '0' 
 }
 
 const getters = {
@@ -41,7 +42,8 @@ const getters = {
   roles: state => state.roles,
   correoConfirmado: state => state.correoConfirmado,  
   habilitado: state => state.habilitado,
-  cntrTmpr: state => state.cntrTmpr
+  cntrTmpr: state => state.cntrTmpr,
+  administrador: state => state.administrador
 }
 
 const actions = {
@@ -115,6 +117,12 @@ const actions = {
       resolve()
     })
   },
+  ['SET_USER']: ({commit}, user) => {
+    return new Promise((resolve) => {
+      commit('SET_USER', user)
+      resolve()
+    })
+  },
   ['SET_ROL']: ({commit}, rol) => {
     return new Promise((resolve) => {
       commit('SET_ROL', rol)
@@ -182,6 +190,11 @@ const mutations = {
     state.correoConfirmado = null
     state.habilitado = null
     state.cntrTmpr = null 
+    state.administrador = null 
+  },
+  ['SET_USER']: (state, user) => {
+    state.administrador = user.administrador
+    state.habilitado = user.habilitado
   },
   ['SET_ROL']: (state, rol) => {
     state.idRol = rol.idRol

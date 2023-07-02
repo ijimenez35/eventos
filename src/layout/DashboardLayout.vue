@@ -17,22 +17,22 @@
         <p>Administrar Usuarios</p>
       </sidebar-link>
 
-      <sidebar-link to="/admin/usuarios">
+      <sidebar-link to="/admin/db">
         <i class="nc-icon nc-app"></i>
         <p>Bases de Datos</p>
       </sidebar-link>
 
-      <sidebar-link to="/admin/usuarios">
+      <sidebar-link to="/admin/htmls">
         <i class="nc-icon nc-tv-2"></i>
         <p>HTML's</p>
       </sidebar-link>
 
-      <sidebar-link to="/admin/usuarios">
+      <sidebar-link to="/admin/correos">
         <i class="nc-icon nc-email-85"></i>
         <p>Correos</p>
       </sidebar-link>
 
-      <sidebar-link to="/admin/usuarios">
+      <sidebar-link to="/admin/imagenes">
         <i class="nc-icon nc-album-2"></i>
         <p>Imagenes</p>
       </sidebar-link>

@@ -5,6 +5,7 @@ import NotFound from '../pages/NotFoundPage.vue'
 import Login from '../pages/Login/index.vue'
 
 import store from 'src/store'
+import Vue from 'vue'
 
 // Admin pages
 import Overview from 'src/pages/Overview.vue'
@@ -19,6 +20,10 @@ import Upgrade from 'src/pages/Upgrade.vue'
 
 import Reporteador from 'src/pages/Reporteador.vue'
 import Usuarios from 'src/pages/Usuarios.vue'
+import Imagenes from 'src/pages/Imagenes.vue'
+import Correos from 'src/pages/Correos.vue'
+import Htmls from 'src/pages/Htmls.vue'
+import BaseDatos from 'src/pages/BaseDatos.vue'
 
 // User pages
 import ConfirmaCorreo from 'src/pages/ConfirmaCorreo/index.vue'
@@ -38,10 +43,19 @@ const ifLogin = (to, from, next) => {
   }
 }
 
+const ifNotAuthenticated = (to, from, next) => {
+  if (!store.getters.isAuthenticated) {
+      next();
+      return;
+  }
+  next("/");
+};
+
 const ifAuthenticated = (to, from, next) => {
+  //console.log( from )
   //next( ) return
-  console.log( store.getters.isAuthenticated )
-  console.log( store.getters.token )
+  //console.log( store.getters.isAuthenticated )
+  //console.log( store.getters.token )
 
   /*
   if( store.getters.isAuthenticated && store.getters.correoConfirmado == '0' && to.name != 'ConfirmaCorreo' ){
@@ -98,23 +112,69 @@ const ifAuthenticated = (to, from, next) => {
       return true
   }
   */
-  if( store.getters.isAuthenticated ){
-    //Esta logueado y tiene entidad seleccionada
-    if (entryUrl) {
-        const url = entryUrl;
-        entryUrl = null;
-        window.location.href = url
-    }
-    
-    if (to.hash.includes("#!/") ){
-        next(to.hash.replace('#!/', ''));
+  if( store.getters.isAuthenticated ){ //Esta logueado en el sistema
+
+    if( to.meta.requiresAdmin ){
+      Vue.showLoader('Verificando sesión del usuario')
+      Vue.vrfcSesion()
+      .then(() => {
+        Vue.hideLoader();
+        //console.log('Usuario Activo y el modulo requiere que sea administrador');
+        //console.log( store.getters.administrador )
+        //let meta = getFields(this.$route.meta);
+        if( store.getters.administrador == '1' ){
+          console.log('Usuario Activo el usuario es administrador');
+          if (entryUrl) {
+              const url = entryUrl;
+              entryUrl = null;
+              window.location.href = url
+          }
+          
+          if (to.hash.includes("#!/") ){
+              next(to.hash.replace('#!/', ''));
+          }else{
+              next( )
+          }
+          
+          return true
+        }else{
+          Vue.notificacion('Se requiere ser administrador para acceder a este menú')
+
+          //console.log('Usuario Activo el usuario no es administrador');
+          if( from.path ){
+            next( from.path )
+          }else{
+            next( "/" )
+          }
+          return false
+        }
+      })
+      .catch(function(error) {
+        Vue.hideLoader();
+      })
+
     }else{
-        next( )
+      //Consulta asincrono el estatus del usuario
+      Vue.vrfcSesion();
+      //router.replaceView
+      
+      if (entryUrl) {
+          const url = entryUrl;
+          entryUrl = null;
+          window.location.href = url
+      }
+      
+      if (to.hash.includes("#!/") ){
+          next(to.hash.replace('#!/', ''));
+      }else{
+          next( )
+      }
+      
+      return true
     }
+
     
-    return true
-  }
-  else {
+  } else { //Usuario no esta logueado en el sistema
       if (to.hash.includes("#!/") ){
           next(to.hash.replace('#!/', ''));
       }else{
@@ -161,13 +221,13 @@ const routes = [
     path: '/login',
     alias: "Login",
     component: Login,
-    beforeEnter: ifLogin
+    beforeEnter: ifNotAuthenticated
   },
   {
     path: '/registro',
     alias: "Registro",
     component: Registro,
-    beforeEnter: ifLogin
+    beforeEnter: ifNotAuthenticated
   },
   {
     path: '/recoverPw',
@@ -194,57 +254,95 @@ const routes = [
     path: '/admin',
     component: DashboardLayout,
     redirect: '/admin/overview',
-    beforeEnter: ifAuthenticated,
     children: [
       {
         path: 'overview',
         name: 'Overview',
+        beforeEnter: ifAuthenticated,
         component: Overview
       },
       {
         path: 'reporteador',
         name: 'Reporteador',
+        beforeEnter: ifAuthenticated,
         component: Reporteador
       },
       {
         path: 'user',
         name: 'User',
+        beforeEnter: ifAuthenticated,
         component: UserProfile
       },
       {
         path: 'table-list',
         name: 'Table List',
+        beforeEnter: ifAuthenticated,
         component: TableList
       },
       {
         path: 'typography',
         name: 'Typography',
+        beforeEnter: ifAuthenticated,
         component: Typography
       },
       {
         path: 'icons',
         name: 'Icons',
+        beforeEnter: ifAuthenticated,
         component: Icons
       },
       {
         path: 'maps',
         name: 'Maps',
+        beforeEnter: ifAuthenticated,
         component: Maps
       },
       {
         path: 'notifications',
         name: 'Notifications',
+        beforeEnter: ifAuthenticated,
         component: Notifications
       },
       {
         path: 'upgrade',
         name: 'Upgrade to PRO',
+        beforeEnter: ifAuthenticated,
         component: Upgrade
       },
       {
         path: 'usuarios',
         name: 'Usuarios',
-        component: Usuarios
+        beforeEnter: ifAuthenticated,
+        component: Usuarios,
+        meta: { requiresAdmin: true }
+      },
+      {
+        path: 'imagenes',
+        name: 'Imagenes',
+        beforeEnter: ifAuthenticated,
+        component: Imagenes,
+        meta: { requiresAdmin: true }
+      },
+      {
+        path: 'correos',
+        name: 'Correos',
+        beforeEnter: ifAuthenticated,
+        component: Correos,
+        meta: { requiresAdmin: true }
+      },
+      {
+        path: 'htmls',
+        name: 'Htmls',
+        beforeEnter: ifAuthenticated,
+        component: Htmls,
+        meta: { requiresAdmin: true }
+      },
+      {
+        path: 'db',
+        name: 'BaseDatos',
+        beforeEnter: ifAuthenticated,
+        component: BaseDatos,
+        meta: { requiresAdmin: true }
       },
     ]
   },

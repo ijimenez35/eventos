@@ -188,9 +188,29 @@ const VueAjax = {
     };
     // Funcion global que esconde el loader
     Vue.hideLoader = () => {
-        $(".box-loader").fadeOut();
-        $("#svgContainer").fadeOut();
+      
+      $(".box-loader").fadeOut();
+      $("#svgContainer").fadeOut();
+      setTimeout(() => {
+        $('#loaderText').html('Procesando Información');
+      }, 400);
     };
+
+    Vue.notificacion = ( text ) => {
+      var html = `<span>Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for every web developer.</span>`;
+      if(text && text != ''){
+        html = text
+      }
+      Vue.prototype.$notifications.notify(
+        {
+          message: html,
+          //icon: 'nc-icon nc-app',
+          icon: 'nc-icon nc-simple-remove',
+          horizontalAlign: 'right',
+          verticalAlign: 'top',
+          type: 'danger'
+        })
+    }
 
     Vue.emrgPstnNeva = function(params) {
 
@@ -236,7 +256,40 @@ const VueAjax = {
       }
     };
 
+    Vue.vrfcSesion = function (){
+      return Vue.requestJSON( { '_cnsl': 'usuario', 'id' : store.getters.idUsuario } ).then(resp => {
+        if (resp && resp.length > 0) {
+            if (resp[0].estatus == "1" && resp[0].habilitado == "1" ) {
+              //Gardamos los valores de la sesion como promesa
+              return store.dispatch('SET_USER', resp[0] )
+              .then(() => {
+                //console.log('Usuario Activo al verificar la sesion');
+
+              })
+              .catch(error => { })
+            } else {
+              //Terminar la sesion
+              //console.log('Usuario Inactivo terminar sesion');
+              store.dispatch('AUTH_LOGOUT').then(() => next("/login/"));
+            }
+        } else {
+          //console.log('No se pudo verificar la sesion')
+          //error en la consulta regresamos
+          /// store.dispatch(AUTH_LOGOUT).then(() => next("/login/"));
+        }
+      })
+      .catch(function(error) {
+        //error en la consulta regresamos
+        /// store.dispatch(AUTH_LOGOUT).then(() => next("/login/"));
+      });
+    }
+
     Vue.requestJSON = function (params) {
+      //Verificar si la ruta actual requiere sesion de administrador
+      
+      //let meta = router.currentRoute.meta;
+      //console.log(meta);
+      
       // some logic ...
       let data = { '_': Math.random() }
 
