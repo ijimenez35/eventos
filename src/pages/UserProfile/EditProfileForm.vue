@@ -1,9 +1,9 @@
 <template>
   <card>
     <h4 slot="header" class="card-title">Edit Profile</h4>
-    <form>
+    <form v-if="request">
       <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-6">
           <base-input type="text"
                     label="Company"
                     :disabled="true"
@@ -11,18 +11,30 @@
                     v-model="user.company">
           </base-input>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-6">
           <base-input type="text"
-                    label="Username"
-                    placeholder="Username"
-                    v-model="user.username">
+                    label="ID Usuario"
+                    :disabled="true"
+                    placeholder="ID Usuario"
+                    v-model="user.id">
           </base-input>
         </div>
-        <div class="col-md-4">
+      </div>
+      <div class="row">
+        <div class="col-md-6">
           <base-input type="email"
                     label="Email"
+                    :disabled="true"
                     placeholder="Email"
                     v-model="user.email">
+          </base-input>
+        </div>
+        <div class="col-md-6">
+          <base-input type="number"
+                    label="Telefono"
+                    :disabled="true"
+                    placeholder="Telefono"
+                    v-model="user.telefono">
           </base-input>
         </div>
       </div>
@@ -99,6 +111,7 @@
   </card>
 </template>
 <script>
+  import Vue from "vue";
   import Card from 'src/components/Cards/Card.vue'
 
   export default {
@@ -108,9 +121,10 @@
     data () {
       return {
         user: {
-          company: 'Light dashboard',
+          company: 'Solución Afore',
           username: 'michael23',
           email: '',
+          telefono: '',
           firstName: 'Mike',
           lastName: 'Andrew',
           address: 'Melbourne, Australia',
@@ -118,14 +132,40 @@
           country: 'Australia',
           postalCode: '',
           aboutMe: `Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.`
-        }
+        },
+        request: false
       }
     },
     methods: {
+      getData(){
+        var self = this
+        Vue.requestJSON( { '_cnsl': 'datosUsuario' } ).then(resp => {
+          //console.log( resp )
+          if( resp ){
+            if( resp.length > 0 ){
+              self.user.id = resp[0].id
+              self.user.email = resp[0].correo
+              self.user.firstName = resp[0].nombre
+              self.user.lastName = resp[0].aPaterno
+              //self.user.lastName = resp[0].aMaterno
+              self.user.telefono = resp[0].telefono 
+              self.request = true
+            }
+          }
+        })
+        .catch(function(error) {
+          //error en la consulta regresamos
+          /// store.dispatch(AUTH_LOGOUT).then(() => next("/login/"));
+        });
+        
+      },
       updateProfile () {
         alert('Your data: ' + JSON.stringify(this.user))
       }
-    }
+    },
+    mounted() {
+      this.getData()
+    },
   }
 
 </script>

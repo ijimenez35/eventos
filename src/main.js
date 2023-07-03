@@ -25,6 +25,7 @@ import LightBootstrap from "./light-bootstrap-main";
 import routes from "./routes/routes";
 
 import store from '@/store'
+//import route from "@/router";
 
 import Modal from '@/components/reusable/modals/modal.vue'
 import ModalsCntn from '@/components/reusable/modals/modalCntn.vue'
@@ -287,12 +288,30 @@ const VueAjax = {
     Vue.requestJSON = function (params) {
       //Verificar si la ruta actual requiere sesion de administrador
       
-      //let meta = router.currentRoute.meta;
+      //let meta = Vue.prototype.$router.currentRoute.meta;
       //console.log(meta);
+      //Vue.prototype.$router.push('/roles/')
       
       // some logic ...
       let data = { '_': Math.random() }
 
+      //Agregamos la variable del usuario
+      if( store ){
+        if( store.getters.isAuthenticated ){
+          Vue.set( data, 'idUsuario' , store.getters.idUsuario )
+        }
+      }
+      //Agregamos la variable si el usuario esta en un modulo que requiere ser administrador
+      if(router){
+        if(router.currentRoute){
+          if( router.currentRoute.meta ){
+            if( router.currentRoute.meta.requiresAdmin ){
+              Vue.set( data, 'admin' , '1' )
+            }
+          }
+        }
+      }
+      
       $.extend(data, params)
 
       //delete axios.defaults.headers.common['Authorization-Backdoor']
