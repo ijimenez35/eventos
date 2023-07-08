@@ -453,8 +453,11 @@
         datos += '"cp":"'+ registro['p_code_ok'] +'", '
         datos += '"edad":"'+ registro['Edad'] +'", '
         datos += '"ageb":"'+ registro['ageb'] +'", '
-        datos += '"estd":"'+ registro['NOM_ENT'] +'", '
-
+        if(registro['NOM_ENT']){
+          datos += '"estd":"'+ registro['NOM_ENT'] +'", '
+        }else if(registro['NOMBRE ENTIDAD']){
+          datos += '"estd":"'+ registro['NOMBRE ENTIDAD'] +'", '
+        }
         datos += '"cve_unica":"'+ registro['cve_unica'] +'", '
         datos += '"total_ue":"'+ registro['total_ue'] +'", '
 
