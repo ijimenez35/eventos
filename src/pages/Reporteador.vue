@@ -98,7 +98,7 @@
                         <td>{{ registro.ID }}</td>
                         <td>{{ registro['NUMERO DE CONTROL'] }}</td>
                         <td>{{ registro['CURP'] }}</td>
-                        <td>{{ registro['NOMBRE ENTIDAD'] }}</td>
+                        <td>{{ getNombreEstado( registro) }}</td>
                         <td>
                           <button type="button" class="btn btn-danger" @click="generarDocumento( registro )">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-pdf" viewBox="0 0 16 16">
@@ -373,6 +373,13 @@
       }
     },
     methods: {
+      getNombreEstado(registro){
+        if( registro['NOM_ENT'] ){
+          return registro['NOM_ENT']
+        }else if( registro['NOMBRE ENTIDAD'] ){
+          return registro['NOMBRE ENTIDAD']
+        }
+      },
       getData(){
         var self = this 
         self.registros = [];
@@ -421,6 +428,8 @@
         }else{
           for( var i = 0 ; i<self.registrosData.length ; i++ ){
             if( self.entidad == self.registrosData[i]['ENTIDAD_y']){
+              registros.push( self.registrosData[i] )
+            }else if( self.entidad == self.registrosData[i]['ENTIDAD'] ){
               registros.push( self.registrosData[i] )
             }
           }
