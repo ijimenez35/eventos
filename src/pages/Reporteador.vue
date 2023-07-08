@@ -525,7 +525,12 @@
             datos += '"cp":"'+ self.registros[i]['p_code_ok'] +'", '
             datos += '"edad":"'+ self.registros[i]['Edad'] +'", '
             datos += '"ageb":"'+ self.registros[i]['ageb'] +'", '
-            datos += '"estd":"'+ self.registros[i]['NOM_ENT'] +'", '
+            
+            if(self.registros[i]['NOM_ENT']){
+              datos += '"estd":"'+ self.registros[i]['NOM_ENT'] +'", '
+            }else if(self.registros[i]['NOMBRE ENTIDAD']){
+              datos += '"estd":"'+ self.registros[i]['NOMBRE ENTIDAD'] +'", '
+            }
 
             datos += '"cve_unica":"'+ self.registros[i]['cve_unica'] +'", '
             datos += '"total_ue":"'+ self.registros[i]['total_ue'] +'", '
