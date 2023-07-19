@@ -27,10 +27,12 @@
         <p>HTML's</p>
       </sidebar-link>
 
+      <!--
       <sidebar-link to="/admin/correos">
         <i class="nc-icon nc-email-85"></i>
         <p>Correos</p>
       </sidebar-link>
+      -->
 
       <sidebar-link to="/admin/imagenes">
         <i class="nc-icon nc-album-2"></i>

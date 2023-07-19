@@ -7,12 +7,12 @@
           <div class="card strpied-tabled-with-hover"><!---->
             <div class="card-header">
               <h4 class="card-title">Usuarios - Registrados en el sistema</h4>
-              <p class="card-category">Here is a subtitle for this table</p>
+              <p class="card-category">En esta sección podra administrar los usuarios que se encuentran registrados en el sistema</p>
             </div>
             <div class="card-body table-full-width table-responsive">
               <table class="table table-hover table-striped">
                 <thead>
-                  <tr><th>Id</th><th>Nombre</th><th>Mail</th><th>Telefono</th><th>Habilitado</th><th>Administrador</th><th>Opciones</th></tr>
+                  <tr><th>Id</th><th>Nombre</th><th>Mail</th><th>Telefono</th><th class="text-center">Habilitado</th><th class="text-center">Administrador</th><th>Opciones</th></tr>
                 </thead>
                 <tbody>
                   <tr v-for="(usuario, index) in usuarios" :key="index">
@@ -21,8 +21,8 @@
                     <td>{{ usuario.nombre + ' ' + usuario.aPaterno + ' ' + usuario.aMaterno }}</td>
                     <td>{{ usuario.correo }}</td>
                     <td>{{ usuario.telefono }}</td>
-                    <td>{{ usuario.habilitado }}</td>
-                    <td>{{ usuario.administrador }}</td>
+                    <td @change="habilitado(usuario,index)" class="text-center"> <input type="checkbox" v-model="usuarios[index].habilitado" v-bind:true-value="'1'" v-bind:false-value="'0'" :readonly="idTipo=='1'" />  </td>
+                    <td @change="administrador(usuario,index,$event)" class="text-center"><input type="checkbox" v-model="usuarios[index].administrador" v-bind:true-value="'1'" v-bind:false-value="'0'" :readonly="idTipo=='1'" /> </td>
                     <td>
 
                     </td>
@@ -41,14 +41,63 @@
   export default {
     data () {
       return {
-        usuarios: []
+        usuarios: [],
+        idTipo: '0'
       }
     },
     methods: {
+      habilitado(usuario, index){
+        var self = this
+        var valorNuevo = self.usuarios[index].habilitado
+        if( valorNuevo == '1'){
+          self.usuarios[index].habilitado = '0'
+        }else{
+          self.usuarios[index].habilitado = '1'
+        }
+
+        var dataForm = {
+          "_cnsl": "actualizaHabilitado",
+          "habilitado": valorNuevo,
+          "idUsusrio": usuario.id
+        }
+
+        Vue.actualiza( dataForm, 
+        //{mensajeSuccesShow:false} 
+        ).then(resp => {
+          if( resp.DatosJSON[0].estatus == 'actualizado' ){
+            //Regresamos al valor anterior ya que no se actualizo
+            self.usuarios[index].habilitado = valorNuevo
+          }
+        });
+        
+      },
+      administrador(usuario, index, e){
+        var self = this
+        var valorNuevo = self.usuarios[index].administrador
+        if( valorNuevo == '1'){
+          self.usuarios[index].administrador = '0'
+        }else{
+          self.usuarios[index].administrador = '1'
+        }
+
+        var dataForm = {
+          "_cnsl": "actualizaAdministrador",
+          "administrador": valorNuevo,
+          "idUsuario": usuario.id
+        }
+
+        Vue.actualiza( dataForm ).then(resp => {
+          if( resp.DatosJSON[0].estatus == 'actualizado' ){
+            //Regresamos al valor anterior ya que no se actualizo
+            self.usuarios[index].administrador = valorNuevo
+          }
+        });
+
+      },
       getData(){
         var self = this
         Vue.requestJSON( { '_cnsl': 'usuarios' } ).then(resp => {
-          console.log( resp )
+          //console.log( resp )
           self.usuarios = resp
         })
         .catch(function(error) {

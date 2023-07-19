@@ -197,8 +197,19 @@ const VueAjax = {
       }, 400);
     };
 
-    Vue.notificacion = ( text ) => {
+    Vue.notificacion = ( text, params ) => {
       var html = `<span>Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for every web developer.</span>`;
+      var icon = 'nc-icon nc-simple-remove'
+      var type = 'danger'
+      if(params){
+        if (typeof params.icon != "undefined") {
+          icon = params.icon;
+        }
+        if (typeof params.type != "undefined") {
+          type = params.type;
+        }
+      }
+      
       if(text && text != ''){
         html = text
       }
@@ -206,10 +217,10 @@ const VueAjax = {
         {
           message: html,
           //icon: 'nc-icon nc-app',
-          icon: 'nc-icon nc-simple-remove',
+          icon: icon,
           horizontalAlign: 'right',
           verticalAlign: 'top',
-          type: 'danger'
+          type: type
         })
     }
 
@@ -324,6 +335,104 @@ const VueAjax = {
           console.log('error en mySQL')
         })
 
+    };
+
+    Vue.archivos = function (params){
+
+      let data = { '_': Math.random(), 'tipo': '2' }
+
+      $.extend(data, params)
+
+      var objectToQuerystring = function (obj) {
+        return Object.keys(obj).reduce(function (str, key, i) {
+            var delimiter, val;
+            delimiter = (i === 0) ? '?' : '&';
+            key = encodeURIComponent(key);
+            val = encodeURIComponent(obj[key]);
+            return [str, delimiter, key, '=', val].join('');
+        }, '');
+    }
+
+    var delFirstCharacter = function(cadena){
+        cadena = cadena.substring(1, cadena.length);
+        return cadena;
+    }
+
+      axios.defaults.headers.common['Authorization'] = store.getters.token  
+      return axios.post(process.env.VUE_APP_API_HOST_JS + '/fileMngr.php', delFirstCharacter( objectToQuerystring( data ) )  )
+        .then(async resp => resp.data.DatosJSON)
+        .catch(err => {
+          console.log('error en archivos')
+        })
+    }
+
+    Vue.actualiza = function (formData, config) {
+
+      let data = { '_': Math.random() }
+
+      var mensajeSucces = 'La información se guardó con exito.'
+      //var mensajeError = 'Ocurrio un error en el guardado de la información.'
+      var mensajeError = 'Ocurrio un error en el guardado, NO responde el servicio'
+      //var mensajeHideAfter = 4000
+      var mensajeSuccesShow = true
+      var mensajeErrorShow = true
+
+      if (config) {
+        if (typeof config.mensajeSucces != 'undefined') {
+          mensajeSucces = config.mensajeSucces
+        }
+        if (typeof config.mensajeError != 'undefined') {
+          mensajeError = config.mensajeError
+        }
+        if (typeof config.mensajeHideAfter != 'undefined') {
+          mensajeHideAfter = config.mensajeHideAfter
+        }
+        if (typeof config.mensajeSuccesShow != 'undefined') {
+          mensajeSuccesShow = config.mensajeSuccesShow
+        }
+        if (typeof config.mensajeErrorShow != 'undefined') {
+          mensajeErrorShow = config.mensajeErrorShow
+        }
+      }
+
+      $.extend(data, formData)
+
+      var objectToQuerystring = function (obj) {
+          return Object.keys(obj).reduce(function (str, key, i) {
+              var delimiter, val;
+              delimiter = (i === 0) ? '?' : '&';
+              key = encodeURIComponent(key);
+              val = encodeURIComponent(obj[key]);
+              return [str, delimiter, key, '=', val].join('');
+          }, '');
+      }
+
+      var delFirstCharacter = function(cadena){
+          cadena = cadena.substring(1, cadena.length);
+          return cadena;
+      }
+
+      Vue.showLoader()
+
+      var enviaDatos = () => {
+        axios.defaults.headers.common['Authorization'] = store.getters.token  
+        return axios.post(process.env.VUE_APP_API_HOST_JS + '/rqstSend.php', delFirstCharacter( objectToQuerystring( data ) ))
+          .then(resp => {
+            Vue.hideLoader()
+            if (mensajeSuccesShow == true) {
+              //Swal.fire( 'OK...', mensajeSucces, 'success' )
+              Vue.notificacion(mensajeSucces, {type: 'success'})
+            }
+            return resp.data
+          })
+          .catch(err => {
+            Vue.hideLoader()
+            if (mensajeErrorShow == true) {
+              Vue.notificacion(mensajeError)
+            }
+          })
+      }
+      return enviaDatos()
     };
   }
 }
