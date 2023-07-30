@@ -1,13 +1,13 @@
 <template>
     <div style="height;100%:">
         <div v-if="isImage">
-            <img :src="src" alt="Imagen" class="" :height='window.height - 150' width="100%" />
+            <img :src="src" alt="Imagen" class="" :height_='window.height - 150' width="100%" />
         </div>
         <div v-if="isPDF">
             <embed :src="src" :height='window.height - 150' width="100%" />
         </div>
         <div v-if="isHTML">
-            <iframe :src="src" :height='window.height - 150' width="100%" title="Archivo"></iframe>
+            <iframe :src="src" :height='window.height - 450' width="100%" title="Archivo"></iframe>
         </div>
         <div v-if="isImage == false && isPDF == false && isHTML == false">
             Archivo no cuenta con vista disponible
