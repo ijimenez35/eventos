@@ -8,7 +8,17 @@
               <h4 class="card-title">HTML de Zonas</h4>
             </div>
             <div class="card-body">
-              <p class="card-category">Listado de HTML asignados a cada ZONA</p>
+              <div class="row" >
+                <div class="col-md-6">
+                  <p class="card-category">Listado de HTML asignados a cada ZONA</p>
+                </div>
+                <div class="col-md-6 text-right">
+                  <button type="button" class="btn btn-success btn-lg_ btn-block_" @click="subirArchivo()">
+                    Subir HTML
+                  </button>
+                </div>
+              </div>
+
               <!--Listado-->
               <div class="row" >
                 <div class="col-md-12">
@@ -79,7 +89,7 @@
     },
     methods: {
       subirArchivo(){
-
+        Vue.subirArchivos( {archivo:'',ext:'html', ruta: this.ruta} );
       },
       getData(){
         var self = this 

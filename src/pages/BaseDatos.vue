@@ -60,14 +60,13 @@
                         <td>{{ registro.basename }}</td>
                         <td>{{ registro.fechaCreacion }}</td>
                         <td>
-                          <!--
-                          <button type="button" class="btn btn-warning " @click="descargar( registro )">
-                            Descargar 
-                          </button>
+                          <a class="btn btn-warning " :href="'http://solucionafore.com/'+ruta+'/' + registro.basename " :download="registro.basename">
+                              Descargar
+                          </a>
+                          &nbsp;
                           <button type="button" class="btn btn-danger " @click="eliminar( registro )">
                             Eliminar 
                           </button>
-                          -->
                         </td>
                       </tr>
                     </tbody> 
@@ -144,6 +143,7 @@
         year: '2023',
         month: '04',
         procesando: false, 
+        ruta: '/dbcsv/',
         table1: {
           columns: [...tableColumns],
           data: [...tableData]
@@ -156,7 +156,12 @@
     },
     methods: {
       subirArchivo(){
-
+        var self = this
+        if( self.month != '0' && self.year != '0' ){
+          Vue.subirArchivos( {archivo:self.year + '_' + self.month,ext:'csv', ruta: self.ruta} );
+        }else{
+          return
+        }
       },
       getData(){
         var self = this 
@@ -196,12 +201,35 @@
           /// store.dispatch(AUTH_LOGOUT).then(() => next("/login/"));
         });
       },
-      descargar(){
-
+      descargar( archivo ){
+        var self = this
+        var link = document.createElement("a");
+        // If you don't know the name or want to use
+        // the webserver default set name = ''
+        link.setAttribute('download', 'descarga');
+        link.href = 'http://solucionafore.com' + self.ruta + archivo.basename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
       },
-      eliminar(){
-
-      }
+      eliminar( archivo ){
+        Vue.alert({ 'title': 'Aviso', 'html': 'Esta seguro de eliminar este archivo?<br><br>' + archivo.basename,
+            'buttons': [
+                {
+                    title: 'Aceptar',
+                    handler: () => { 
+                        
+                    }
+                },
+                {
+                    title: 'Cancelar',
+                    handler: () => { 
+                        
+                    }
+                }
+            ]
+        })
+      },
     },
     mounted() {
       this.getData()

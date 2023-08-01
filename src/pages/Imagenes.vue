@@ -8,7 +8,20 @@
               <h4 class="card-title">Imagenes de Zonas</h4>
             </div>
             <div class="card-body">
-              <p class="card-category">Listado de Imagenes asignados a cada ZONA</p>
+              
+
+              <!--Opciones-->
+              <div class="row" >
+                <div class="col-md-6">
+                  <p class="card-category">Listado de Imagenes asignados a cada ZONA</p>
+                </div>
+                <div class="col-md-6 text-right">
+                  <button type="button" class="btn btn-success btn-lg_ btn-block_" @click="subirArchivo()">
+                    Subir Imagen
+                  </button>
+                </div>
+              </div>
+              
               <!--Listado-->
               <div class="row" >
                 <div class="col-md-12">
@@ -55,7 +68,7 @@
               <div class="row" >
                 <div class="col-md-12">
                   <button type="button" class="btn btn-success btn-lg btn-block" @click="subirArchivo()">
-                    Subir HTML
+                    Subir Imagen
                   </button>
                 </div>
               </div>
@@ -79,7 +92,7 @@
     },
     methods: {
       subirArchivo(){
-
+        Vue.subirArchivos( {archivo:'',ext:'jpg', ruta: this.ruta} );
       },
       getData(){
         var self = this 

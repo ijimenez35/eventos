@@ -17,6 +17,7 @@
     "bootstrap": "4.6.0",
     "cache-loader": "^4.1.0",
     "chartist": "0.11.0",
+    "dropify": "^0.2.2",
     "google-maps": "3.2.1",
     "jquery": "^3.7.0",
     "register-service-worker": "1.7.2",

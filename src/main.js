@@ -18,6 +18,9 @@ import VueRouter from "vue-router";
 import App from "./App.vue";
 import axios from 'axios'
 
+import "dropify";
+import "dropify/dist/css/dropify.min.css";
+
 // LightBootstrap plugin
 import LightBootstrap from "./light-bootstrap-main";
 
@@ -30,6 +33,8 @@ import store from '@/store'
 import Modal from '@/components/reusable/modals/modal.vue'
 import ModalsCntn from '@/components/reusable/modals/modalCntn.vue'
 import ModalAlert from '@/components/reusable/modals/modalAlert.vue'
+
+import subirArchivos from "@/components/reusable/archivos/subirArchivos.vue";
 
 const defaultComponentName = 'Modal'
 const unmountedRootErrorMessage = '[vue-js-modal] In order to render dynamic modals, a <modals-container> ' + 'component must be present on the page'
@@ -433,6 +438,70 @@ const VueAjax = {
           })
       }
       return enviaDatos()
+    };
+
+    // Funcion global que genera un emergente para subir archivos al servidor con los elementos de seguridad requeridos
+    Vue.subirArchivos = function(params) {
+      // afterUpload
+      var title = "Subir Archivo";
+      if (typeof params.title != "undefined") {
+          title = params.title;
+      }
+      var afterUpload = function() {};
+      if (typeof params.afterUpload != "undefined") {
+          if (typeof params.afterUpload == "function") {
+              afterUpload = params.afterUpload;
+          }
+      }
+      var archivo = "";
+      if (typeof params.archivo != "undefined") {
+          archivo = params.archivo;
+      }
+      var ext = "";
+      if (typeof params.ext != "undefined") {
+          ext = params.ext;
+      }
+      var exts = [];
+      if (typeof params.exts != "undefined") {
+          exts = params.exts;
+      }
+      var ancho = "";
+      if (typeof params.ancho != "undefined") {
+          ancho = params.ancho;
+      }
+      var alto = "";
+      if (typeof params.alto != "undefined") {
+          alto = params.alto;
+      }
+
+      Vue.prototype.$vueModal.showModal(
+        subirArchivos, {
+              ruta: params.ruta,
+              afterUpload: afterUpload,
+              archivo: archivo,
+              ext: ext,
+              exts: exts,
+              ancho: ancho,
+              alto: alto
+          }, {}, {
+              title: title,
+              buttons: [{
+                      title: "Subir Archivo",
+                      handler: () => {
+                          //alert('Woot!')
+                      },
+                      handler_: "submitForm",
+                      close: false
+                  },
+                  {
+                      title: "Cancelar",
+                      handler: () => {
+                          //alert('Woot!')
+                      }
+                  }
+              ]
+          }
+      );
     };
   }
 }
