@@ -5,9 +5,23 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card" >
-            <div class="card-header">
-              <h4 class="card-title">Reporteador</h4>
+            <div class="row ">
+              <div class="col-md-6">
+                <div class="card-header">
+                  <h4 class="card-title">Reporteador</h4>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-outline mt-4 mr-3">
+                  <select class="form-control" v-model="PDFVersion">
+                    <option value="reporte">Version 1</option>
+                    <option value="reporte_2">Version 2</option>
+                  </select>
+                  <label class="form-label" for="form2Example11">Version PDF</label>
+                </div>
+              </div>
             </div>
+            
             <div class="card-body">
               <p class="card-category">Selecciona Mes y Entidad</p>
               <div class="row m-t-30" style="margin-top:30px;">
@@ -41,7 +55,7 @@
                     <label class="form-label" for="form2Example11">Año</label>
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" v-show=" year != '0' && month != '0'">
                   <div class="form-outline mb-4">
                     <select class="form-control" v-model="entidad" @change="filtroEntidad()">
                       <option value="0">Todas</option>
@@ -281,6 +295,8 @@
     },
     data () {
       return {
+        PDFVersion: 'reporte_2',
+        PDFVersiones: [ 'reporte', 'reporte_2' ],
         year: '2023',
         month: '0',
         entidad: '0',
@@ -587,9 +603,10 @@
 
       },
       vistaDocumento( datos ){
+        var self = this
         console.log( datos )
         var params = { "Datos": datos };
-        Vue.emrgPstnNeva( { "method":'post', "params": params, "url": process.env.VUE_APP_API_HOST_JS + '/reporte.php' } );
+        Vue.emrgPstnNeva( { "method":'post', "params": params, "url": process.env.VUE_APP_API_HOST_JS + '/'+ self.PDFVersion + '.php' } );
       }
     }
 
