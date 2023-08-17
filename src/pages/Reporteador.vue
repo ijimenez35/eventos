@@ -462,18 +462,25 @@
         var datos = '{';
         datos += '"ID":"'+ registro['ID'] +'", '
 
-        datos += '"nmroCntr":"'+ registro['NUMERO DE CONTROL'] +'", '
+        if(registro['Numero de Control']){
+          datos += '"nmroCntr":"'+ registro['Numero de Control'] +'", '
+        }else if(registro['NUMERO DE CONTROL']){
+          datos += '"nmroCntr":"'+ registro['NUMERO DE CONTROL'] +'", '
+        }
+
         datos += '"curp":"'+ registro['CURP'] +'", '
         datos += '"mncp":"'+ registro['NOMBRE MUNICIPIO'] +'", '
         datos += '"sexo":"'+ registro['Sexo'] +'", '
         datos += '"cp":"'+ registro['p_code_ok'] +'", '
         datos += '"edad":"'+ registro['Edad'] +'", '
         datos += '"ageb":"'+ registro['ageb'] +'", '
+
         if(registro['NOM_ENT']){
           datos += '"estd":"'+ registro['NOM_ENT'] +'", '
         }else if(registro['NOMBRE ENTIDAD']){
           datos += '"estd":"'+ registro['NOMBRE ENTIDAD'] +'", '
         }
+        
         datos += '"cve_unica":"'+ registro['cve_unica'] +'", '
         datos += '"total_ue":"'+ registro['total_ue'] +'", '
 
