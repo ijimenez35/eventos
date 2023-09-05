@@ -541,7 +541,15 @@
             datos += '{'
             datos += '"ID":"'+ self.registros[i]['ID'] +'", '
             
-            datos += '"nmroCntr":"'+ self.registros[i]['NUMERO DE CONTROL'] +'", '
+            //datos += '"nmroCntr":"'+ self.registros[i]['NUMERO DE CONTROL'] +'", '
+
+            if(self.registros[i]['Numero de Control']){
+              datos += '"nmroCntr":"'+ self.registros[i]['Numero de Control'] +'", '
+            }else if(self.registros[i]['NUMERO DE CONTROL']){
+              datos += '"nmroCntr":"'+ self.registros[i]['NUMERO DE CONTROL'] +'", '
+            }
+
+
             datos += '"curp":"'+ self.registros[i]['CURP'] +'", '
             datos += '"mncp":"'+ self.registros[i]['NOMBRE MUNICIPIO'] +'", '
             datos += '"sexo":"'+ self.registros[i]['Sexo'] +'", '
@@ -611,8 +619,20 @@
       },
       vistaDocumento( datos ){
         var self = this
-        console.log( datos )
-        var params = { "Datos": datos };
+        var mes = '';
+        if(self.month == '01' ){ mes = 'Enero'; }
+        if(self.month == '02' ){ mes = 'Febrero'; }
+        if(self.month == '03' ){ mes = 'Marzo'; }
+        if(self.month == '04' ){ mes = 'Abril'; }
+        if(self.month == '05' ){ mes = 'Mayo'; }
+        if(self.month == '06' ){ mes = 'Junio'; }
+        if(self.month == '07' ){ mes = 'Julio'; }
+        if(self.month == '08' ){ mes = 'Agosto'; }
+        if(self.month == '09' ){ mes = 'Septiembre'; }
+        if(self.month == '10' ){ mes = 'Octubre'; }
+        if(self.month == '11' ){ mes = 'Noviembre'; }
+        if(self.month == '12' ){ mes = 'Diciembre'; }
+        var params = { "Datos": datos, "month": mes, "year": self.year };
         Vue.emrgPstnNeva( { "method":'post', "params": params, "url": process.env.VUE_APP_API_HOST_JS + '/'+ self.PDFVersion + '.php' } );
       }
     }
