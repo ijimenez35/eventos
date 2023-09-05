@@ -16,6 +16,7 @@
                   <select class="form-control" v-model="PDFVersion">
                     <option value="reporte">Version 1</option>
                     <option value="reporte_2">Version 2</option>
+                    <option value="reporte_3">Version 3</option>
                   </select>
                   <label class="form-label" for="form2Example11">Version PDF</label>
                 </div>
@@ -625,7 +626,7 @@
         if(self.month == '03' ){ mes = 'Marzo'; }
         if(self.month == '04' ){ mes = 'Abril'; }
         if(self.month == '05' ){ mes = 'Mayo'; }
-        if(self.month == '06' ){ mes = 'Junio'; }
+        if(self.month == '06' ){ mes = 'Junio'; mes = 'Julio'; }
         if(self.month == '07' ){ mes = 'Julio'; }
         if(self.month == '08' ){ mes = 'Agosto'; }
         if(self.month == '09' ){ mes = 'Septiembre'; }
