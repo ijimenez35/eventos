@@ -11,7 +11,7 @@
                   <h4 class="card-title">Reporteador</h4>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-3">
                 <div class="form-outline mt-4 mr-3">
                   <select class="form-control" v-model="PDFVersion">
                     <option value="reporte">Version 1</option>
@@ -19,6 +19,15 @@
                     <option value="reporte_3">Version 3</option>
                   </select>
                   <label class="form-label" for="form2Example11">Version PDF</label>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-outline mt-4 mr-3">
+                  <select class="form-control" v-model="vistaPDF">
+                    <option value="I">En linea</option>
+                    <option value="D">Descarga</option>
+                  </select>
+                  <label class="form-label" for="form2Example11">Vista del PDF</label>
                 </div>
               </div>
             </div>
@@ -296,7 +305,8 @@
     },
     data () {
       return {
-        PDFVersion: 'reporte_2',
+        PDFVersion: 'reporte_3',
+        vistaPDF: 'I',
         PDFVersiones: [ 'reporte', 'reporte_2' ],
         year: '2023',
         month: '0',
@@ -633,7 +643,7 @@
         if(self.month == '10' ){ mes = 'Octubre'; }
         if(self.month == '11' ){ mes = 'Noviembre'; }
         if(self.month == '12' ){ mes = 'Diciembre'; }
-        var params = { "Datos": datos, "month": mes, "year": self.year };
+        var params = { "Datos": datos, "month": mes, "year": self.year, vista: self.vistaPDF };
         Vue.emrgPstnNeva( { "method":'post', "params": params, "url": process.env.VUE_APP_API_HOST_JS + '/'+ self.PDFVersion + '.php' } );
       }
     }
