@@ -17,6 +17,7 @@
                     <option value="reporte">Version 1</option>
                     <option value="reporte_2">Version 2</option>
                     <option value="reporte_3">Version 3</option>
+                    <option value="reporte_4">Version 4</option>
                   </select>
                   <label class="form-label" for="form2Example11">Version PDF</label>
                 </div>
@@ -352,7 +353,7 @@
       return {
         nombreBaseDatos: '',
         baseDatos: [], 
-        PDFVersion: 'reporte_3',
+        PDFVersion: 'reporte_4',
         vistaPDF: 'I',
         PDFVersiones: [ 'reporte', 'reporte_2' ],
         year: '2023',
