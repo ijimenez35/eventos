@@ -37,6 +37,19 @@
               <p class="card-category">Selecciona Mes y Entidad</p>
               <div class="row m-t-30" style="margin-top:30px;">
                 <div class="col-md-6">
+                  <div class="form-outline mb-4" v-show="true">
+                    <select class="form-control" v-model="year">
+                      <option value="0">Seleciona un Año</option>
+                      <option value="2024">2024</option>
+                      <option value="2023">2023</option>
+                      <option value="2022">2022</option>
+                      <option value="2021">2021</option>
+                      <option value="2020">2020</option>
+                    </select>
+                    <label class="form-label" for="form2Example11">Año</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
                   <div class="form-outline mb-4">
                     <select class="form-control" v-model="month" @change="getData()">
                       <option value="0">Seleciona un Mes</option>
@@ -54,16 +67,6 @@
                       <option value="12">Diciembre</option>
                     </select>
                     <label class="form-label" for="form2Example11">Mes</label>
-                  </div>
-                  <div class="form-outline mb-4" v-show="false">
-                    <select class="form-control" v-model="year">
-                      <option value="0">Seleciona un Año</option>
-                      <option value="2023">2023</option>
-                      <option value="2022">2022</option>
-                      <option value="2021">2021</option>
-                      <option value="2020">2020</option>
-                    </select>
-                    <label class="form-label" for="form2Example11">Año</label>
                   </div>
                 </div>
                 <div class="col-md-6" v-show=" year != '0' && month != '0'">
@@ -356,7 +359,7 @@
         PDFVersion: 'reporte_4',
         vistaPDF: 'I',
         PDFVersiones: [ 'reporte', 'reporte_2' ],
-        year: '2023',
+        year: '2024',
         month: '0',
         entidad: '0',
         checkedAll: false,
