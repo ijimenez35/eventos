@@ -2,6 +2,9 @@
   <div class="wrapper">
     <side-bar :title="nombreUsuario">
       <mobile-menu slot="content"></mobile-menu>
+      <!--
+
+      
       <sidebar-link to="/admin/reporteador">
         <i class="nc-icon nc-notes"></i>
         <p>Reporteador</p>
@@ -26,19 +29,44 @@
         <i class="nc-icon nc-tv-2"></i>
         <p>HTML's</p>
       </sidebar-link>
-
+-->
       <!--
       <sidebar-link to="/admin/correos">
         <i class="nc-icon nc-email-85"></i>
         <p>Correos</p>
       </sidebar-link>
       -->
-
-      <sidebar-link to="/admin/imagenes">
+<!--
+<sidebar-link to="/admin/imagenes">
         <i class="nc-icon nc-album-2"></i>
         <p>Imagenes</p>
       </sidebar-link>
+-->
+      
 
+      <sidebar-link to="/admin/ticket">
+        <i class="nc-icon nc-single-copy-04"></i>
+        <p>Ticket</p>
+      </sidebar-link>
+
+      <sidebar-link to="/admin/eventos">
+        <i class="nc-icon nc-tv-2"></i>
+        <p>Eventos</p>
+      </sidebar-link>
+      <sidebar-link to="/admin/boletos">
+        <i class="nc-icon nc-tv-2"></i>
+        <p>Boletos</p>
+      </sidebar-link>
+
+      <sidebar-link to="/admin/reportes">
+        <i class="nc-icon nc-notes"></i>
+        <p>Reportes</p>
+      </sidebar-link>
+
+      <sidebar-link to="/admin/icons">
+        <i class="nc-icon nc-atom"></i>
+        <p>Icons</p>
+      </sidebar-link>
 
       <!--
       <sidebar-link to="/admin/reporteador">

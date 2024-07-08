@@ -1,0 +1,33 @@
+{"DatosJSON": [
+    { "id":"1", "route": "/rol/2/torneos/", "title": "Torneos", "abrv":"", "classIcon": "ti-cup", "subOptions" :[
+        { "id":"9", "route": "/rol/2/torneos/consulta/", "title": "Consulta", "abrv":"", "classIcon": "ti-search", "subOptions" :[] },
+        { "id":"10", "route": "/rol/2/torneos/captura/", "title": "Captura", "abrv":"", "classIcon": "ti-pencil", "subOptions" :[] }
+    ] },
+    { "id":"2", "route": "/rol/2/equipos/", "title": "Equipos", "abrv":"", "classIcon": "fa fa-shield", "subOptions" :[
+        { "id":"11", "route": "/rol/2/equipos/consulta/", "title": "Consulta", "abrv":"", "classIcon": "ti-search", "subOptions" :[] },
+        { "id":"12", "route": "/rol/2/equipos/captura/", "title": "Captura", "abrv":"", "classIcon": "ti-pencil", "subOptions" :[] }
+    ] },
+    { "id":"3", "route": "/rol/2/sedes/", "title": "Sedes", "abrv":"", "classIcon": "ti-map", "subOptions" :[
+        { "id":"13", "route": "/rol/2/sedes/consulta/", "title": "Consulta", "abrv":"", "classIcon": "ti-search", "subOptions" :[] },
+        { "id":"14", "route": "/rol/2/sedes/captura/", "title": "Captura", "abrv":"", "classIcon": "ti-pencil", "subOptions" :[] }
+    ] },
+    { "id":"4", "route": "/rol/2/jugadores/", "title": "Jugadores", "abrv":"", "classIcon": "ti-user", "subOptions" :[
+        { "id":"15", "route": "/rol/2/jugadores/consulta/", "title": "Consulta", "abrv":"", "classIcon": "ti-search", "subOptions" :[] },
+        { "id":"16", "route": "/rol/2/jugadores/captura/", "title": "Captura", "abrv":"", "classIcon": "ti-pencil", "subOptions" :[] }
+    ] },
+    { "id":"5", "route": "/rol/2/arbitros/", "title": "Arbitros", "abrv":"", "classIcon": "fa fa-flag fa-3x", "subOptions" :[
+        { "id":"17", "route": "/rol/2/arbitros/consulta/", "title": "Consulta", "abrv":"", "classIcon": "ti-search", "subOptions" :[] },
+        { "id":"18", "route": "/rol/2/arbitros/captura/", "title": "Captura", "abrv":"", "classIcon": "ti-pencil", "subOptions" :[] }
+    ] },
+    { "id":"6", "route": "/rol/2/comisarios/", "title": "Comisarios", "abrv":"", "classIcon": "fa fa-clipboard", "subOptions" :[
+        { "id":"19", "route": "/rol/2/comisarios/consulta/", "title": "Consulta", "abrv":"", "classIcon": "ti-search", "subOptions" :[] },
+        { "id":"20", "route": "/rol/2/comisarios/captura/", "title": "Captura", "abrv":"", "classIcon": "ti-pencil", "subOptions" :[] }
+    ] },
+    { "id":"7", "route": "/rol/2/estadistica/", "title": "Estadistica", "abrv":"", "classIcon": "ti-bar-chart-alt", "subOptions" :[ ] },
+    { "id":"8", "route": "/rol/2/competencia/", "title": "Competencia", "abrv":"", "classIcon": "ti-view-list-alt", "subOptions" :[
+        { "id":"21", "route": "/rol/2/competencia/categorias/", "title": "Categorias", "abrv":"Ctgr", "classIcon": "", "subOptions" :[] },
+        { "id":"22", "route": "/rol/2/competencia/torneos/", "title": "Torneos", "abrv":"Trno", "classIcon": "", "subOptions" :[] },
+        { "id":"23", "route": "/rol/2/competencia/jornadas/", "title": "Jornadas", "abrv":"Jrnd", "classIcon": "", "subOptions" :[] },
+        { "id":"24", "route": "/rol/2/competencia/partidos/", "title": "Partidos", "abrv":"Prtd", "classIcon": "", "subOptions" :[] }
+    ] }
+]}

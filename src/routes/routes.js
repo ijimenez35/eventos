@@ -31,6 +31,13 @@ import ContraseniaTemporal from 'src/pages/ContraseniaTemporal/index.vue'
 import Registro from 'src/pages/Registro/index.vue'
 import RecoverPw from 'src/pages/RecoverPw/index.vue'
 
+import Ticket from 'src/pages/Ticket.vue'
+import Eventos from 'src/pages/Eventos.vue'
+import Boletos from 'src/pages/Boletos.vue'
+import Reportes from 'src/pages/Reportes.vue'
+
+import RegistroEvento from 'src/pages/RegistroEvento/index.vue'
+
 // Default pages
 
 let entryUrl = null;
@@ -224,6 +231,12 @@ const routes = [
     beforeEnter: ifNotAuthenticated
   },
   {
+    path: '/registroEvento',
+    alias: "RegistroEvento",
+    component: RegistroEvento,
+    beforeEnter: ifNotAuthenticated
+  },
+  {
     path: '/registro',
     alias: "Registro",
     component: Registro,
@@ -255,6 +268,30 @@ const routes = [
     component: DashboardLayout,
     redirect: '/admin/overview',
     children: [
+      {
+        path: 'ticket',
+        name: 'Ticket',
+        beforeEnter: ifAuthenticated,
+        component: Ticket
+      },
+      {
+        path: 'eventos',
+        name: 'Eventos',
+        beforeEnter: ifAuthenticated,
+        component: Eventos
+      },
+      {
+        path: 'boletos',
+        name: 'Boletos',
+        beforeEnter: ifAuthenticated,
+        component: Boletos
+      },
+      {
+        path: 'reportes',
+        name: 'Reportes',
+        beforeEnter: ifAuthenticated,
+        component: Reportes
+      },
       {
         path: 'overview',
         name: 'Overview',
